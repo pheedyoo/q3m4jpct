@@ -21,38 +21,61 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package q3m.md3;
+package q3m.q3.ani;
 
 import java.io.IOException;
-
-import q3m.q3.Q3Stream;
+import java.io.InputStream;
 
 /**
- * MD3 Shader.
+ * Quake III player torso animation configuration.
  * 
  * @author nlotz
  */
-public class MD3Shader implements MD3 {
+public class AniCfgQ3Upper extends AniCfgQ3Both {
 
     /**
-     * Name.
+     * Sequence index (gesture).
      */
-    public String name = null;
+    public static final int GESTURE = 6;
 
     /**
-     * Index.
+     * Sequence index (attack).
      */
-    public int index = 0;
+    public static final int ATTACK = 7;
 
     /**
-     * Reads an MD3 shader from a stream.
+     * Sequence index (attack2).
+     */
+    public static final int ATTACK2 = 8;
+
+    /**
+     * Sequence index (drop).
+     */
+    public static final int DROP = 9;
+
+    /**
+     * Sequence index (raise).
+     */
+    public static final int RAISE = 10;
+
+    /**
+     * Sequence index (stand).
+     */
+    public static final int STAND = 11;
+
+    /**
+     * Sequence index (stand2).
+     */
+    public static final int STAND2 = 12;
+
+    /**
+     * Reads a Quake III player torso animation configuration from a stream.
      * 
-     * @param stream The stream to read from
+     * @param in the stream to read from
      * @throws IOException
      */
-    public MD3Shader(Q3Stream stream) throws IOException {
-        name = stream.readString();
-        index = stream.readInt();
+    public AniCfgQ3Upper(InputStream in) throws IOException {
+        super(in, 13);
     }
 
 }

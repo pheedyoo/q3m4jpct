@@ -38,22 +38,47 @@ public class Q3Stream implements Q3 {
     private int offset;
     private byte[] b4;
 
+    /**
+     * Constructs a Quake III resource stream.
+     * 
+     * @param in the stream to read from
+     * @throws IOException
+     */
     public Q3Stream(InputStream in) throws IOException {
         stream = new DataInputStream(in);
         offset = 0;
         b4 = new byte[4];
     }
 
+    /**
+     * Returns the current stream position.
+     * 
+     * @return the current stream position
+     */
     public int getOffset() {
         return offset;
     }
 
+    /**
+     * Reads the next byte of data.
+     * 
+     * @return the next byte of data, or <code>-1</code> if the end of the
+     *             stream is reached
+     * @throws IOException
+     */
     public int read() throws IOException {
         int value = stream.read();
         offset++;
         return value;
     }
 
+    /**
+     * Reads an array of bytes.
+     * 
+     * @param length the number of bytes to read
+     * @return the data read
+     * @throws IOException
+     */
     public byte[] read(int length) throws IOException {
         byte[] b = new byte[length];
         stream.readFully(b);
@@ -61,25 +86,48 @@ public class Q3Stream implements Q3 {
         return b;
     }
 
+    /**
+     * Reads a float value.
+     * 
+     * @return the value read
+     * @throws IOException
+     */
     public float readFloat() throws IOException {
         return Float.intBitsToFloat(readInt());
     }
 
+    /**
+     * Reads a one-dimensional array of float values.
+     * 
+     * @param dim the array dimension
+     * @return the data read
+     * @throws IOException
+     */
     public float[] readFloats(int dim) throws IOException {
 
         int off = 0;
         byte[] b = read(dim * 4);
         float[] v = new float[dim];
         for (int i = 0; i < dim; i++) {
-            v[i] = Float.intBitsToFloat(((b[off + 0] & 0xff) << 0)
-                    | ((b[off + 1] & 0xff) << 8) | ((b[off + 2] & 0xff) << 16)
-                    | ((b[off + 3] & 0xff) << 24));
+            v[i] = Float.intBitsToFloat(
+                        (b[off + 0] & 0xff) |
+                       ((b[off + 1] & 0xff) << 8) | 
+                       ((b[off + 2] & 0xff) << 16) |
+                       ((b[off + 3] & 0xff) << 24));
             off += 4;
         }
 
         return v;
     }
 
+    /**
+     * Reads a two-dimensional array of float values.
+     * 
+     * @param dim1 the first array dimension
+     * @param dim2 the second array dimension
+     * @return the data read
+     * @throws IOException
+     */
     public float[][] readFloats(int dim1, int dim2) throws IOException {
 
         int off = 0;
@@ -99,6 +147,12 @@ public class Q3Stream implements Q3 {
         return v;
     }
 
+    /**
+     * Reads a signed 32bit integer value.
+     * 
+     * @return the value read
+     * @throws IOException
+     */
     public int readInt() throws IOException {
         stream.readFully(b4);
         offset += 4;
@@ -108,6 +162,13 @@ public class Q3Stream implements Q3 {
                 ((b4[3] & 0xff) << 24));
     }
 
+    /**
+     * Reads a one-dimensional array of signed 32bit integer values.
+     * 
+     * @param dim the array dimension
+     * @return the data read
+     * @throws IOException
+     */
     public int[] readInts(int dim) throws IOException {
 
         int off = 0;
@@ -124,6 +185,14 @@ public class Q3Stream implements Q3 {
         return v;
     }
 
+    /**
+     * Reads a two-dimensional array of signed 32bit integer values.
+     * 
+     * @param dim1 the first array dimension
+     * @param dim2 the second array dimension
+     * @return the data read
+     * @throws IOException
+     */
     public int[][] readInts(int dim1, int dim2) throws IOException {
 
         int off = 0;
@@ -141,17 +210,51 @@ public class Q3Stream implements Q3 {
 
         return v;
     }
-
-    public int readUnsignedShort() throws IOException {
+    
+    /**
+     * Reads a signed short value.
+     * 
+     * @return the value read
+     * @throws IOException
+     */
+    public int readShortSigned() throws IOException {
+        stream.readFully(b4, 0, 2);
+        offset += 2;
+        return (short) (b4[0] & 0xff) |  (short) ((b4[1] & 0xff) << 8);
+    }
+    
+    /**
+     * Reads an unsigned short value.
+     * 
+     * @return the value read
+     * @throws IOException
+     */
+    public int readShortUnsigned() throws IOException {
         stream.readFully(b4, 0, 2);
         offset += 2;
         return ((b4[0] & 0xff) | ((b4[1] & 0xff) << 8));
     }
 
+    /**
+     * Reads a zero-terminated, fixed-length string.
+     * 
+     * The length of the string will be <code>MAX_QPATH</code>.
+     * 
+     * @return the value read
+     * @throws IOException
+     * @see Q3#MAX_QPATH
+     */
     public String readString() throws IOException {
         return readString(MAX_QPATH);
     }
 
+    /**
+     * Reads a zero-terminated, fixed-length string.
+     * 
+     * @param length the length of the string
+     * @return the value read
+     * @throws IOException
+     */
     public String readString(int length) throws IOException {
 
         int i = 0;

@@ -28,7 +28,7 @@ package q3m.md3;
  * 
  * @author nlotz
  */
-public class MD3Tag {
+public class MD3Tag implements MD3 {
 
     /**
      * Name.
