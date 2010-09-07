@@ -21,38 +21,69 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package q3m.md3;
+package q3m.ani;
 
 import java.io.IOException;
 
-import q3m.q3.Q3Stream;
-
 /**
- * MD3 Shader.
+ * Single-sequence animation configuration.
  * 
  * @author nlotz
  */
-public class MD3Shader implements MD3 {
+public abstract class AniCfgSingle extends AniCfgAbstr {
 
     /**
-     * Name.
+     * The default number of frames per second. 
      */
-    public String name = null;
+    public static final int DEFAULT_FPS = 15;
 
     /**
-     * Index.
-     */
-    public int index = 0;
-
-    /**
-     * Reads an MD3 shader from a stream.
+     * Creates a single-sequence animation configuration.
      * 
-     * @param stream The stream to read from
+     * @param numFrames the number of frames
      * @throws IOException
      */
-    public MD3Shader(Q3Stream stream) throws IOException {
-        name = stream.readString();
-        index = stream.readInt();
+    public AniCfgSingle(int numFrames) throws IOException {
+        this(numFrames, DEFAULT_FPS);
+    }
+
+    /**
+     * Creates a single-sequence animation configuration.
+     * 
+     * @param numFrames the number of frames
+     * @param fps the number of frames per second
+     * @throws IOException
+     */
+    public AniCfgSingle(int numFrames, int fps) throws IOException {
+        super(new int[][] { { 0, fps, numFrames, numFrames } });
+    }
+
+    /* (non-Javadoc)
+     * @see q3m.ani.AniCfg#getFirstIndex()
+     */
+    public int getFirstIndex() {
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see q3m.ani.AniCfg#getFpsIndex()
+     */
+    public int getFpsIndex() {
+        return 1;
+    }
+
+    /* (non-Javadoc)
+     * @see q3m.ani.AniCfg#getLengthIndex()
+     */
+    public int getLengthIndex() {
+        return 2;
+    }
+
+    /* (non-Javadoc)
+     * @see q3m.ani.AniCfg#getLoopingIndex()
+     */
+    public int getLoopingIndex() {
+        return 3;
     }
 
 }
