@@ -52,7 +52,7 @@ public class MD3Frame implements MD3 {
     /**
      * Reads an MD3 frame from a stream.
      * 
-     * @param stream The stream to read from
+     * @param stream the stream to read from
      * @throws IOException
      */
     public MD3Frame(Q3Stream stream) throws IOException {

@@ -21,73 +21,60 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package q3m.q3.ani;
+package q3m.jpct;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 import q3m.Q3M;
 
 /**
- * Quake III player torso animation configuration.
+ * Quake III skin.
  * 
  * @author nlotz
  */
-public class AniCfgQ3Upper extends AniCfgQ3Both {
+public class Q3Skin {
 
-    /**
-     * Sequence index (gesture).
-     */
-    public static final int GESTURE = 7;
+    public Hashtable shaders;
 
-    /**
-     * Sequence index (attack).
-     */
-    public static final int ATTACK = 8;
-
-    /**
-     * Sequence index (attack2).
-     */
-    public static final int ATTACK2 = 9;
-
-    /**
-     * Sequence index (drop).
-     */
-    public static final int DROP = 10;
-
-    /**
-     * Sequence index (raise).
-     */
-    public static final int RAISE = 11;
-
-    /**
-     * Sequence index (stand).
-     */
-    public static final int STAND = 12;
-
-    /**
-     * Sequence index (stand2).
-     */
-    public static final int STAND2 = 13;
-
-    /**
-     * Reads a Quake III player torso animation configuration from a resource.
-     * 
-     * @param path the resource path
-     * @throws IOException
-     */
-    public AniCfgQ3Upper(String path) throws IOException {
+    public Q3Skin(String path) throws IOException {
         this(Q3M.getResStream(path));
     }
 
-    /**
-     * Reads a Quake III player torso animation configuration from a stream.
-     * 
-     * @param in the stream to read from
-     * @throws IOException
-     */
-    public AniCfgQ3Upper(InputStream in) throws IOException {
-        super(in, 13);
+    public Q3Skin(InputStream in) throws IOException {
+
+        shaders = new Hashtable();
+
+        String line = null;
+        Reader r = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(r);
+        while (null != (line = br.readLine())) {
+
+            line = line.trim();
+            if ((line.length() < 1) || (line.startsWith("//"))) {
+                continue;
+            }
+
+            StringTokenizer st = new StringTokenizer(line, ",");
+            if (st.countTokens() != 2) {
+                continue;
+            }
+
+            shaders.put(trim(st.nextToken()), trim(st.nextToken()));
+        }
+    }
+
+    private String trim(String s) {
+        s = s.trim();
+        if (s.startsWith("\"") && s.endsWith("\"")) {
+            s = s.substring(1, s.length() - 1);
+        }
+        return s;
     }
 
 }

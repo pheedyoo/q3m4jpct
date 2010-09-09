@@ -26,6 +26,7 @@ package q3m.q3.ani;
 import java.io.IOException;
 import java.io.InputStream;
 
+import q3m.Q3M;
 import q3m.ani.AniCfgAbstr;
 
 /**
@@ -38,32 +39,43 @@ public abstract class AniCfgQ3Both extends AniCfgAbstr {
     /**
      * Sequence index (death 1).
      */
-    public static final int DEATH1 = 0;
+    public static final int DEATH1 = 1;
 
     /**
      * Sequence index (dead 1).
      */
-    public static final int DEAD1 = 1;
+    public static final int DEAD1 = 2;
 
     /**
      * Sequence index (death 2).
      */
-    public static final int DEATH2 = 2;
+    public static final int DEATH2 = 3;
 
     /**
      * Sequence index (dead 2).
      */
-    public static final int DEAD2 = 3;
+    public static final int DEAD2 = 4;
 
     /**
      * Sequence index (death 3).
      */
-    public static final int DEATH3 = 4;
+    public static final int DEATH3 = 5;
 
     /**
      * Sequence index (dead 3).
      */
-    public static final int DEAD3 = 5;
+    public static final int DEAD3 = 6;
+    
+    /**
+     * Reads a Quake III player animation configuration from a resource path.
+     * 
+     * @param path the resource path
+     * @param rows the number of sequences to read
+     * @throws IOException
+     */
+    protected AniCfgQ3Both(String path, int rows) throws IOException {
+        super(Q3M.getResStream(path), rows);
+    }
 
     /**
      * Reads a Quake III player animation configuration from a stream.

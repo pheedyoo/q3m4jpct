@@ -45,12 +45,29 @@ public abstract class AniCfgAbstr implements AniCfg {
     protected int[][] values;
 
     /**
+     * Values for animation sequence '0'.
+     */
+    protected int[] zeroSequence;
+
+    /**
      * Creates an animation configuration from configuration values.
      * 
      * @param values the configuration values
      */
     public AniCfgAbstr(int[][] values) {
         this.values = values;
+        zeroSequence = null;
+    }
+
+    /**
+     * Reads an animation configuration from resource path.
+     * 
+     * @param path the resource path
+     * @param rows the number of animation sequences to read
+     * @throws IOException
+     */
+    public AniCfgAbstr(String path, int rows) throws IOException {
+        this(Q3M.getResStream(path), rows);
     }
 
     /**
@@ -63,10 +80,12 @@ public abstract class AniCfgAbstr implements AniCfg {
     public AniCfgAbstr(InputStream in, int rows) throws IOException {
         Q3M.debug("reading " + rows + " animation sequences");
 
+        values = new int[rows][4];
+        zeroSequence = null;
+
         int row = 0;
         try {
             String line = null;
-            values = new int[rows][4];
             Reader r = new InputStreamReader(in);
             BufferedReader br = new BufferedReader(r);
             while ((null != (line = br.readLine())) && (row < rows)) {
@@ -98,68 +117,53 @@ public abstract class AniCfgAbstr implements AniCfg {
             throw new IOException("row underflow (" + row + " < " + rows + ")");
     }
 
-    /* (non-Javadoc)
-     * @see q3m.ani.AniCfg#calcFrame(float, int)
-     */
-    public float calcFrame(float index, int sequence) {
-
-        if (getLength(sequence) < 2) {
-            return getFirst(sequence);
-        }
-
-        return getFirst(sequence) + (index * getLength(sequence));
+    private int get(int sequence, int valueIndex) {
+        return (sequence == 0) ? getZeroSequence()[valueIndex]
+                : values[sequence - 1][valueIndex];
     }
 
     /* (non-Javadoc)
-     * @see q3m.ani.AniCfg#calcNextFrame(float, int)
+     * @see q3m.ani.AniCfg#getAniFrame(float, int)
      */
-    public int calcNextFrame(float index, int sequence) {
-
-        if (getLength(sequence) < 2) {
-            return getFirst(sequence);
-        }
-
-        int nextFrame = 1 + (int) calcFrame(index, sequence);
-        int lastFrame = getFirst(sequence) + getLength(sequence) - 1;
-        while (nextFrame > lastFrame) {
-            nextFrame -= getLength(sequence);
-        }
-
-        return nextFrame;
+    public AniFrame getAniFrame(float index, int sequence) {
+        return new AniFrame(this, index, sequence);
     }
 
     /* (non-Javadoc)
      * @see q3m.anim.AnimCfg#getFirst(int)
      */
     public int getFirst(int sequence) {
-        return values[sequence][getFirstIndex()];
+        return get(sequence, getFirstIndex());
     }
 
     /* (non-Javadoc)
      * @see q3m.anim.AnimCfg#getFps(int)
      */
     public int getFps(int sequence) {
-        return values[sequence][getFpsIndex()];
+        return get(sequence, getFpsIndex());
     }
 
     /* (non-Javadoc)
      * @see q3m.anim.AnimCfg#getLength(int)
      */
     public int getLength(int sequence) {
-        return values[sequence][getLengthIndex()];
+        return get(sequence, getLengthIndex());
     }
 
     /* (non-Javadoc)
      * @see q3m.anim.AnimCfg#getLooping(int)
      */
     public int getLooping(int sequence) {
-        return values[sequence][getLoopingIndex()];
+        return get(sequence, getLoopingIndex());
     }
 
     /* (non-Javadoc)
-     * @see q3m.anim.AnimCfg#getTotalKeyFrames()
+     * @see q3m.anim.AnimCfg#getDefinedKeyFrames()
      */
-    public int getTotalKeyFrames() {
+    public int getDefinedKeyFrames() {
+        if (values.length == 0) {
+            return zeroSequence[getLengthIndex()];
+        }
         int total = 0;
         for (int s = 0; s < values.length; s++) {
             total += values[s][getLengthIndex()];
@@ -168,10 +172,29 @@ public abstract class AniCfgAbstr implements AniCfg {
     }
 
     /* (non-Javadoc)
-     * @see q3m.anim.AnimCfg#getTotalSequences()
+     * @see q3m.anim.AnimCfg#getDefinedSequences()
      */
-    public int getTotalSequences() {
+    public int getDefinedSequences() {
         return values.length;
+    }
+
+    /* (non-Javadoc)
+     * @see q3m.ani.AniCfg#getZeroSequence()
+     */
+    public int[] getZeroSequence() {
+        if (zeroSequence == null) {
+            int averageFps = 0;
+            for (int s = 0; s < values.length; s++) {
+                averageFps += values[s][getFpsIndex()];
+            }
+            averageFps /= values.length;
+            zeroSequence = new int[4];
+            zeroSequence[getFirstIndex()] = 0;
+            zeroSequence[getFpsIndex()] = averageFps;
+            zeroSequence[getLengthIndex()] = getDefinedKeyFrames();
+            zeroSequence[getLoopingIndex()] = getDefinedKeyFrames();
+        }
+        return zeroSequence;
     }
 
 }

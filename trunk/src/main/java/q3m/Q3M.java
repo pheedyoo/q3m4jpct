@@ -67,7 +67,7 @@ public class Q3M {
     /**
      * Closes an input stream.
      * 
-     * @param in The input stream to close
+     * @param in the input stream to close
      */
     public static void close(InputStream in) {
         try {
@@ -81,7 +81,7 @@ public class Q3M {
     /**
      * Logs a DEBUG message.
      * 
-     * @param message The message to log
+     * @param message the message to log
      */
     public static void debug(String message) {
         if (logLevel <= DEBUG) {
@@ -93,7 +93,7 @@ public class Q3M {
     /**
      * Logs an ERROR message.
      * 
-     * @param message The message to log
+     * @param message the message to log
      */
     public static void error(String message) {
         if (logLevel <= ERROR) {
@@ -105,29 +105,29 @@ public class Q3M {
     /**
      * Finds the resource with the given path.
      * 
-     * @param path The resource path
+     * @param path the resource path
      * @return A <code>URL</code> object for reading the resource,
      *     or <code>null</code> if the resource could not be found
      */
     public static URL getRes(String path) {
-        return Q3M.class.getResource(path);
+        return Q3M.class.getResource(path.replace('\\', '/'));
     }
 
     /**
      * Finds the resource with the given path.
      * 
-     * @param path The resource path
+     * @param path the resource path
      * @return An input stream for reading the resource,
      *     or <code>null</code> if the resource could not be found
      */
     public static InputStream getResStream(String path) {
-        return Q3M.class.getResourceAsStream(path);
+        return Q3M.class.getResourceAsStream(path.replace('\\', '/'));
     }
 
     /**
      * Logs an INFO message.
      * 
-     * @param message The message to log
+     * @param message the message to log
      */
     public static void info(String message) {
         if (logLevel <= INFO) {
@@ -139,7 +139,7 @@ public class Q3M {
     /**
      * Logs a WARN message.
      * 
-     * @param message The message to log
+     * @param message the message to log
      */
     public static void warn(String message) {
         if (logLevel <= WARN) {

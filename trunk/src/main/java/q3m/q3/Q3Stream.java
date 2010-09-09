@@ -85,6 +85,18 @@ public class Q3Stream implements Q3 {
         offset += length;
         return b;
     }
+    
+    /**
+     * Reads a byte value.
+     * 
+     * @return the value read
+     * @throws IOException
+     */
+    public byte readByte() throws IOException {
+        byte value = stream.readByte();
+        offset++;
+        return value;
+    }
 
     /**
      * Reads a float value.

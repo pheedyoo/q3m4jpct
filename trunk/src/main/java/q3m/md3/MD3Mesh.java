@@ -68,8 +68,8 @@ public class MD3Mesh implements MD3 {
     /**
      * Reads an MD3 surface from a stream.
      * 
-     * @param model The parent MD3 model
-     * @param stream The stream to read from
+     * @param model the parent MD3 model
+     * @param stream the stream to read from
      * @throws IOException
      */
     public MD3Mesh(MD3Model model, Q3Stream stream) throws IOException {
@@ -105,35 +105,35 @@ public class MD3Mesh implements MD3 {
         Q3M.debug("      End: " + offEnd);
         Q3M.debug("</MD3MeshHeader>");
 
+        if (numShaders < 1)
+            shaders = new MD3Shader[0];
+
         int skipped = 0;
         long offset = stream.getOffset() - offsetStart;
         while (offset < offEnd) {
-            if (offset == offShaders) {
+            if ((shaders == null) && (offset == offShaders)) {
                 Q3M.debug("reading shaders at offset " + offset);
                 shaders = new MD3Shader[numShaders];
                 for (int s = 0; s < numShaders; s++) {
                     shaders[s] = new MD3Shader(stream);
                 }
-            } else if (offset == offTriangles) {
+            } else if ((triangles == null) && (offset == offTriangles)) {
                 Q3M.debug("reading triangles at offset " + offset);
                 triangles = stream.readInts(numTriangles, 3);
-            } else if (offset == offTexCoords) {
+            } else if ((texCoords == null) && (offset == offTexCoords)) {
                 Q3M.debug("reading texture coords at offset " + offset);
                 texCoords = stream.readFloats(numVertices, 2);
-            } else if (offset == offVertices) {
+            } else if ((vertices == null) && (offset == offVertices)) {
                 Q3M.debug("reading vertices & normals at offset " + offset);
                 vertices = new float[numFrames][numVertices][3];
                 for (int f = 0; f < numFrames; f++) {
                     byte[] b = stream.read(numVertices * 8);
                     for (int v = 0, x = 0; v < numVertices; v++, x += 8) {
-                        vertices[f][v][0] = (((short) (b[x + 0] & 0xff) | 
-                                (short) ((b[x + 1] & 0xff) << 8)))
+                        vertices[f][v][0] = (((short) (b[x + 0] & 0xff) | (short) ((b[x + 1] & 0xff) << 8)))
                                 * XYZ_SCALE;
-                        vertices[f][v][1] = (((short) (b[x + 2] & 0xff) | 
-                                (short) ((b[x + 3] & 0xff) << 8)))
+                        vertices[f][v][1] = (((short) (b[x + 2] & 0xff) | (short) ((b[x + 3] & 0xff) << 8)))
                                 * XYZ_SCALE;
-                        vertices[f][v][2] = (((short) (b[x + 4] & 0xff) | 
-                                (short) ((b[x + 5] & 0xff) << 8)))
+                        vertices[f][v][2] = (((short) (b[x + 4] & 0xff) | (short) ((b[x + 5] & 0xff) << 8)))
                                 * XYZ_SCALE;
                         //int compressedNormalZenith = b[x + 6] & 0xff;// TODO
                         //int compressedNormalAzimuth = b[x + 7] & 0xff;// TODO
@@ -165,5 +165,4 @@ public class MD3Mesh implements MD3 {
             Q3M.warn("MD3Mesh: skipped " + skipped + " bytes of data");
         }
     }
-
 }

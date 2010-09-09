@@ -1,0 +1,60 @@
+<March 3, 2000>
+================================================================
+Model Name:		Tank Girl
+Installation Directory:	baseq3\md3-tankgirl.pk3
+Model Author(s):	Wrath
+Skin Author(s):		Gutboy, Psychodroid, Matthew "M@tthi@§" Mella
+Shader Author(s):	Wrath (default), Psychodroid (Tekk Girl), Matthew "M@tthi@§" Mella (TinTin)
+Email Address:		wrath@polycount.com, gutboy@lineone.net, psychodroid@hotmail.com,xmullet@hotmail.com
+
+Model description:	Tank Girl, from the comics and movie.
+			See http://www.worthing.co.uk/tank.htm for a more thorough history of the character, or do your own
+			net search for "Tank Girl" and see what comes up.
+
+Other info:		Gutboy has done some bot files...but I haven't had a chance to sort through them and make sure they all work yet,
+			so as soon as I get a chance to do that, I'll release them as well.
+
+Additional Credits to:	<id Software, Jamie Hewlett and Alan Martin>
+
+Thanks to:		Gutboy, Psychodroid, & Matthew "M@tthi@§" Mella for doing skins.
+			NPherno for being such a great lay and being so good with tools.
+			NPherno's mom...for pretty much the same reasons.
+
+Author(s) notes:	This model was built, mapped, and animated in about a week.  I put the model up on my
+			site and posted a message at www.polycount.com asking for intersted parties to do skins
+			for her.
+			After about a month, I hadn't gotten anything back.  Gutboy came forward and volunteered to
+			skin her, and he sent me a finished skin less than a week later.
+			Since then, there have been a couple of skins that managed to leak in at the last second...both
+			of which are top notch efforts and happily addeded to the default flavor.
+
+			I'm still hoping that this model might fulfill my life long fantasy of releasing a player model
+			that gets 2 bajillion skins done for it by the community. ;)
+================================================================
+* Play Information *
+
+Skins:			default, tekkgirl
+Bot support:		No
+New Sounds:		No
+CTF Skins:		No
+
+* Construction *
+Who did what:		Wrath modeled, mapped, and animated Tank Girl.
+			Gutboy painted the default skin, which I was calling "Buff Girl"
+			PsychoDroid painted the Tekk Girl skins, and makes excellent use of alpha channels :)
+			Matthew "M@tthi@§" Mella painted the TinTin skins, they're not nearly as crappy as he says they are ;)
+
+Tools(s) used:		3DS Max 2.5, Character Studio, NST v.1, Corel Photopaint, Adobe Photoshop, notepad, NPherno's MD3 Compiler, and in house tools
+
+* How to use this model *
+<INSTALLATION INFO>
+Unzip md3-tankgirl.pk3 into the baseq3 folder.
+In order to use this model as a player model, it may be necessary to create a baseq3/models/players/tankgirl folder under the Quake3 directory, and put a file in it.
+The model can also be used by entering "\model tankgirl" in the console..."\model tankgirl/tekkgirl" will use the "Tekk Girl" skin, and "\model tankgirl/tintin" will use the TinTin
+
+* Copyright / Permissions *
+QUAKE(R) and QUAKE III Arena(R) are registered trademarks of id Software, Inc.
+
+This model may be freely distributed in any form, UNALTERED.  Which means, you can't remove/change the readme file, other files, or add your own stuff to it and pass it along.
+Copyright of the model, mapping, and animations belong to me.  Copyright of the default skin belongs to Gutboy.  Copyright of the Tekk Girl skin belongs to PsychoDroid.  Copyright of the TinTin Skin belongs to Matthew "M@tthi@§" Mella.
+Don't steal our stuff.  If you absolutely have to use it for something...have the decency to drop one of us an email and ask first.

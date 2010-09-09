@@ -39,92 +39,92 @@ public class AniCfgETHead extends AniCfgAbstr {
     /**
      * Sequence index (small eye movements, played all the time).
      */
-    public static final int IDLE1 = 0;
+    public static final int IDLE1 = 1;
 
     /**
      * Sequence index (big blink).
      */
-    public static final int IDLE2 = 1;
+    public static final int IDLE2 = 2;
 
     /**
      * Sequence index (look left).
      */
-    public static final int IDLE3 = 2;
+    public static final int IDLE3 = 3;
 
     /**
      * Sequence index (large head movements).
      */
-    public static final int IDLE4 = 3;
+    public static final int IDLE4 = 4;
 
     /**
      * Sequence index (look up).
      */
-    public static final int IDLE5 = 4;
+    public static final int IDLE5 = 5;
 
     /**
      * Sequence index (look left and right with little head movements).
      */
-    public static final int IDLE6 = 5;
+    public static final int IDLE6 = 6;
 
     /**
      * Sequence index (look right).
      */
-    public static final int IDLE7 = 6;
+    public static final int IDLE7 = 7;
 
     /**
      * Sequence index (blink).
      */
-    public static final int IDLE8 = 7;
+    public static final int IDLE8 = 8;
 
     /**
      * Sequence index (head idle in pain, played all the time).
      */
-    public static final int DAMAGED_IDLE1 = 8;
+    public static final int DAMAGED_IDLE1 = 9;
 
     /**
      * Sequence index (not quite dead).
      */
-    public static final int DAMAGED_IDLE2 = 9;
+    public static final int DAMAGED_IDLE2 = 10;
 
     /**
      * Sequence index (no hope left).
      */
-    public static final int DAMAGED_IDLE3 = 10;
+    public static final int DAMAGED_IDLE3 = 11;
 
     /**
      * Sequence index (left).
      */
-    public static final int LEFT = 11;
+    public static final int LEFT = 12;
 
     /**
      * Sequence index (right).
      */
-    public static final int RIGHT = 12;
+    public static final int RIGHT = 13;
 
     /**
      * Sequence index (attack).
      */
-    public static final int ATTACK = 13;
+    public static final int ATTACK = 14;
 
     /**
      * Sequence index (attack end).
      */
-    public static final int ATTACK_END = 14;
+    public static final int ATTACK_END = 15;
 
     /**
      * Sequence index (pain 1).
      */
-    public static final int PAIN_1 = 15;
+    public static final int PAIN_1 = 16;
 
     /**
      * Sequence index (pain 2).
      */
-    public static final int PAIN_2 = 16;
+    public static final int PAIN_2 = 17;
 
     /**
      * Sequence index (smile).
      */
-    public static final int SMILE = 17;
+    public static final int SMILE = 18;
 
     /**
      * Reads the default ET head animation configuration.
