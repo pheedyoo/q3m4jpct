@@ -21,39 +21,64 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package q3m.md3;
+package q3m.jpct;
+
+import q3m.md3.MD3Tag;
+
+import com.threed.jpct.Matrix;
+import com.threed.jpct.Object3D;
+import com.threed.jpct.SimpleVector;
 
 /**
- * MD3 Tag.
+ * Quake III tag.
  * 
  * @author nlotz
  */
-public class MD3Tag implements MD3 {
+public class Q3Tag extends Object3D {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Name.
      */
-    public String name = null;
+    public String name;
 
     /**
-     * NUM_FRAMES * translation vector.
+     * NUM_FRAMES * transformation matrix.
      */
-    public float[][] origin = null;
+    public Matrix[] matrix;
 
     /**
-     * NUM_FRAMES * 3x3 rotation matrix.
-     */
-    public float[][] axis = null;
-
-    /**
-     * Constructs an MD3 tag.
+     * Creates a tag from MD3 data.
      * 
-     * @param numFrames the number of animation frames
+     * @param tag the MD3 tag
      */
-    public MD3Tag(int numFrames) {
-        name = null;
-        origin = new float[numFrames][3];
-        axis = new float[numFrames][9];
+    public Q3Tag(MD3Tag tag) {
+        super(Object3D.createDummyObj());
+        name = tag.name;
+        matrix = new Matrix[tag.axis.length];
+        for (int f = 0; f < matrix.length; f++) {
+            matrix[f] = new Matrix();
+            matrix[f].translate(new SimpleVector(tag.origin[f]));
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    matrix[f].set(row, col, tag.axis[f][row * 3 + col]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Transforms the tag.
+     * 
+     * @param index the frame index
+     * @param f1 the first frame
+     * @param f2 the second frame
+     */
+    public void transform(float index, int f1, int f2) {
+        Matrix m = new Matrix();
+        m.interpolate(matrix[f1], matrix[f2], index);
+        setRotationMatrix(m); // applies translation, too
     }
 
 }

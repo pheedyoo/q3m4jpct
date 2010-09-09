@@ -31,23 +31,28 @@ package q3m.ani;
 public interface AniCfg {
     
     /**
-     * Returns the keyframe for a given sequence and index.
+     * Return keyframe information for a given index into a sequence.
      * 
      * @param index the index into the sequence
      * @param sequence the animation sequence
      * @return
      */
-    public float calcFrame(float index, int sequence);
+    public AniFrame getAniFrame(float index, int sequence);
+    
+    /**
+     * Returns the total number of keyframes.
+     * 
+     * @return the total number of keyframes
+     */
+    public int getDefinedKeyFrames();
 
     /**
-     * Returns the next keyframe for a given sequence and index.
+     * Returns the total number of sequences.
      * 
-     * @param index the index into the sequence
-     * @param sequence the animation sequence
-     * @return
+     * @return the total number of sequences
      */
-    public int calcNextFrame(float index, int sequence);
-
+    public int getDefinedSequences();
+    
     /**
      * Returns the index of the 'first' value.
      * 
@@ -107,19 +112,12 @@ public interface AniCfg {
      * @return the value for the sequence
      */
     public int getLooping(int sequence);
-
+    
     /**
-     * Returns the total number of keyframes.
+     * Returns the configuration values for the zero animation.
      * 
-     * @return the total number of keyframes
+     * @return the configuration values for the zero animation
      */
-    public int getTotalKeyFrames();
-
-    /**
-     * Returns the total number of sequences.
-     * 
-     * @return the total number of sequences
-     */
-    public int getTotalSequences();
-
+    public int[] getZeroSequence();
+    
 }

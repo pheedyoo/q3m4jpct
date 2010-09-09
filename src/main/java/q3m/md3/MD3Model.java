@@ -62,99 +62,117 @@ public class MD3Model implements MD3 {
     public MD3Mesh[] meshes;
 
     /**
+     * Reads an MD3 model from resource path.
+     * 
+     * @param path the resource path
+     * @throws IOException
+     */
+    public MD3Model(String path) throws IOException {
+        this(Q3M.getResStream(path));
+    }
+
+    /**
      * Reads an MD3 model from a stream.
      * 
-     * @param md3 The stream to read from
+     * @param md3 the stream to read from
      * @throws IOException
      */
     public MD3Model(InputStream md3) throws IOException {
+        try {
 
-        Q3Stream stream = new Q3Stream(md3);
+            Q3Stream stream = new Q3Stream(md3);
 
-        int ident = stream.readInt();
-        if (ident != IDENT)
-            throw new IOException("MD3_IDENT expected (" + ident + " <> "
-                    + IDENT + ")");
+            int ident = stream.readInt();
+            if (ident != IDENT)
+                throw new IOException("MD3_IDENT expected (" + ident + " <> "
+                        + IDENT + ")");
 
-        int version = stream.readInt();
-        if (version != VERSION)
-            throw new IOException("MD3_VERSION expected (" + version + " <> "
-                    + VERSION + ")");
+            int version = stream.readInt();
+            if (version != VERSION)
+                throw new IOException("MD3_VERSION expected (" + version
+                        + " <> " + VERSION + ")");
 
-        name = stream.readString();
-        flags = stream.readInt();
+            name = stream.readString();
+            flags = stream.readInt();
 
-        int numFrames = stream.readInt();
-        int numTags = stream.readInt();
-        int numMeshes = stream.readInt();
-        int numSkins = stream.readInt();
+            int numFrames = stream.readInt();
+            int numTags = stream.readInt();
+            int numMeshes = stream.readInt();
+            int numSkins = stream.readInt();
 
-        int offsetFrames = stream.readInt();
-        int offsetTags = stream.readInt();
-        int offsetMeshes = stream.readInt();
-        int offsetEnd = stream.readInt();
+            int offsetFrames = stream.readInt();
+            int offsetTags = stream.readInt();
+            int offsetMeshes = stream.readInt();
+            int offsetEnd = stream.readInt();
 
-        Q3M.debug("<MD3ModelHeader>");
-        Q3M.debug("  Name: " + name);
-        Q3M.debug(" Flags: " + flags);
-        Q3M.debug(" Skins: " + numSkins);
-        Q3M.debug("Frames: " + numFrames + " at offset " + offsetFrames);
-        Q3M.debug("  Tags: " + numTags + " at offset " + offsetTags);
-        Q3M.debug("Meshes: " + numMeshes + " at offset " + offsetMeshes);
-        Q3M.debug("   End: " + offsetEnd);
-        Q3M.debug("</MD3ModelHeader>");
+            Q3M.debug("<MD3ModelHeader>");
+            Q3M.debug("  Name: " + name);
+            Q3M.debug(" Flags: " + flags);
+            Q3M.debug(" Skins: " + numSkins);
+            Q3M.debug("Frames: " + numFrames + " at offset " + offsetFrames);
+            Q3M.debug("  Tags: " + numTags + " at offset " + offsetTags);
+            Q3M.debug("Meshes: " + numMeshes + " at offset " + offsetMeshes);
+            Q3M.debug("   End: " + offsetEnd);
+            Q3M.debug("</MD3ModelHeader>");
 
-        int skipped = 0;
-        int offset = stream.getOffset();
-        while (offset < offsetEnd) {
-            if (offset == offsetFrames) {
-                Q3M.debug("reading frame(s) at offset " + offset);
-                frames = new MD3Frame[numFrames];
-                for (int f = 0; f < numFrames; f++) {
-                    frames[f] = new MD3Frame(stream);
-                }
-            } else if (offset == offsetTags) {
-                Q3M.debug("reading tag(s) at offset " + offset);
-                tags = new MD3Tag[numTags];
-                for (int f = 0; f < numFrames; f++) {
-                    for (int t = 0; t < numTags; t++) {
-                        if (f == 0) {
-                            tags[t] = new MD3Tag(numFrames);
-                        }
-                        tags[t].name = stream.readString();
-                        tags[t].origin[f] = stream.readFloats(3);
-                        tags[t].axis[f] = stream.readFloats(9);
-                        if (f == 0) {
-                            Q3M.debug("Tag #" + t + ": " + tags[t].name);
+            if (numMeshes < 1)
+                meshes = new MD3Mesh[0];
+
+            int skipped = 0;
+            int offset = stream.getOffset();
+            while (offset < offsetEnd) {
+                if (offset == offsetFrames) {
+                    Q3M.debug("reading frame(s) at offset " + offset);
+                    frames = new MD3Frame[numFrames];
+                    for (int f = 0; f < numFrames; f++) {
+                        frames[f] = new MD3Frame(stream);
+                    }
+                } else if (offset == offsetTags) {
+                    Q3M.debug("reading tag(s) at offset " + offset);
+                    tags = new MD3Tag[numTags];
+                    for (int f = 0; f < numFrames; f++) {
+                        for (int t = 0; t < numTags; t++) {
+                            if (f == 0) {
+                                tags[t] = new MD3Tag(numFrames);
+                            }
+                            tags[t].name = stream.readString();
+                            tags[t].origin[f] = stream.readFloats(3);
+                            tags[t].axis[f] = stream.readFloats(9);
+                            if (f == 0) {
+                                Q3M.debug("Tag #" + t + ": " + tags[t].name);
+                            }
                         }
                     }
+                } else if (offset == offsetMeshes) {
+                    Q3M.debug("reading mesh(es) at offset " + offset);
+                    meshes = new MD3Mesh[numMeshes];
+                    for (int m = 0; m < numMeshes; m++) {
+                        meshes[m] = new MD3Mesh(this, stream);
+                    }
+                } else {
+                    // no matching chunk!?
+                    // skip one byte and try again
+                    stream.read();
+                    skipped++;
                 }
-            } else if (offset == offsetMeshes) {
-                Q3M.debug("reading mesh(es) at offset " + offset);
-                meshes = new MD3Mesh[numMeshes];
-                for (int m = 0; m < numMeshes; m++) {
-                    meshes[m] = new MD3Mesh(this, stream);
-                }
-            } else {
-                // no matching chunk!?
-                // skip one byte and try again
-                stream.read();
-                skipped++;
+                offset = stream.getOffset();
             }
-            offset = stream.getOffset();
-        }
 
-        if (frames == null)
-            throw new IOException("MD3Model: frame(s) not found");
+            if (frames == null)
+                throw new IOException("MD3Model: frame(s) not found");
 
-        if (tags == null)
-            throw new IOException("MD3Model: tag(s) not found");
+            if (tags == null)
+                throw new IOException("MD3Model: tag(s) not found");
 
-        if (meshes == null)
-            throw new IOException("MD3Model: mesh(es) not found");
+            if (meshes == null)
+                throw new IOException("MD3Model: mesh(es) not found");
 
-        if (skipped > 0) {
-            Q3M.warn("MD3Model: skipped " + skipped + " bytes of data");
+            if (skipped > 0) {
+                Q3M.warn("MD3Model: skipped " + skipped + " bytes of data");
+            }
+
+        } finally {
+            Q3M.close(md3);
         }
     }
 }

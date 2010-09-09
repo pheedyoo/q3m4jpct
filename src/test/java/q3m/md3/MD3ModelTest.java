@@ -1,7 +1,5 @@
 package q3m.md3;
 
-import java.io.InputStream;
-
 import junit.framework.TestCase;
 import q3m.Q3M;
 
@@ -11,68 +9,46 @@ public class MD3ModelTest extends TestCase {
         Q3M.logLevel = Q3M.DEBUG;
     }
 
-    public void testETHead() throws Exception {
-        InputStream in = null;
-        MD3Model model = null;
-        try {
+    public void testQ3TankGirlHead() throws Exception {
 
-            in = Q3M.getResStream("/res/et/models/players/hud/head.md3");
-            assertNotNull(in);
+        MD3Model model = new MD3Model(
+                "/res/q3/models/players/tankgirl/head.md3");
 
-            model = new MD3Model(in);
-            assertNotNull(model);
-
-            assertEquals("", model.name);
-            assertEquals(0, model.flags);
-
-            assertNotNull(model.frames);
-            assertEquals(401, model.frames.length);
-
-            assertNotNull(model.meshes);
-            assertEquals(4, model.meshes.length);
-            assertEquals("teeth", model.meshes[0].name);
-            assertEquals(401, model.meshes[0].vertices.length);
-            assertEquals("head", model.meshes[1].name);
-            assertEquals(401, model.meshes[1].vertices.length);
-            assertEquals("eye1", model.meshes[2].name);
-            assertEquals(401, model.meshes[2].vertices.length);
-            assertEquals("eye2", model.meshes[3].name);
-            assertEquals(401, model.meshes[3].vertices.length);
-
-        } finally {
-            Q3M.close(in);
-        }
+        assertNotNull(model);
+        assertEquals("tankgirl", model.name);
+        assertEquals(0, model.flags);
+        assertNotNull(model.frames);
+        assertEquals(1, model.frames.length);
+        assertNotNull(model.meshes);
+        assertEquals(2, model.meshes.length);
     }
 
-    public void testETHeadLod1() throws Exception {
-        InputStream in = null;
-        MD3Model model = null;
-        try {
+    public void testQ3TankGirlLower() throws Exception {
 
-            in = Q3M.getResStream("/res/et/models/players/hud/head_1.md3");
-            assertNotNull(in);
+        MD3Model model = new MD3Model(
+                "/res/q3/models/players/tankgirl/lower.md3");
 
-            model = new MD3Model(in);
-            assertNotNull(model);
+        assertNotNull(model);
+        assertEquals("tankgirl", model.name);
+        assertEquals(0, model.flags);
+        assertNotNull(model.frames);
+        assertEquals(220, model.frames.length);
+        assertNotNull(model.meshes);
+        assertEquals(1, model.meshes.length);
+    }
 
-            assertEquals("", model.name);
-            assertEquals(0, model.flags);
+    public void testQ3TankGirlUpper() throws Exception {
 
-            assertNotNull(model.frames);
-            assertEquals(1, model.frames.length);
+        MD3Model model = new MD3Model(
+                "/res/q3/models/players/tankgirl/upper.md3");
 
-            assertNotNull(model.meshes);
-            assertEquals(3, model.meshes.length);
-            assertEquals("head", model.meshes[0].name);
-            assertEquals(1, model.meshes[0].vertices.length);
-            assertEquals("eye1", model.meshes[1].name);
-            assertEquals(1, model.meshes[1].vertices.length);
-            assertEquals("eye2", model.meshes[2].name);
-            assertEquals(1, model.meshes[2].vertices.length);
-
-        } finally {
-            Q3M.close(in);
-        }
+        assertNotNull(model);
+        assertEquals("tankgirl", model.name);
+        assertEquals(0, model.flags);
+        assertNotNull(model.frames);
+        assertEquals(175, model.frames.length);
+        assertNotNull(model.meshes);
+        assertEquals(4, model.meshes.length);
     }
 
 }

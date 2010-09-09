@@ -1,0 +1,19 @@
+* Copyright / Permissions *
+
+QUAKE(R) and QUAKE III Arena(R) are registered trademarks of id Software, Inc.
+
+This model may be freely distributed in any form, UNALTERED. Which means, you
+can't remove/change the readme file, other files, or add your own stuff to it
+and pass it along.
+
+Copyright of the model, mapping, and animations belong to Wrath.  
+Copyright of the default skin belongs to Gutboy.  
+Copyright of the Tekk Girl skin belongs to PsychoDroid.  
+Copyright of the TinTin Skin belongs to Matthew "M@tthi@§" Mella.
+
+Don't steal our stuff.
+
+If you absolutely have to use it for something...have the decency to drop one
+of us an email and ask first.
+
+Wrath <wrath@polycount.com>

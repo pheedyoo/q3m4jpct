@@ -23,14 +23,12 @@
  */
 package q3m.ani;
 
-import java.io.IOException;
-
 /**
  * Single-sequence animation configuration.
  * 
  * @author nlotz
  */
-public abstract class AniCfgSingle extends AniCfgAbstr {
+public class AniCfgSingle extends AniCfgAbstr {
 
     /**
      * The default number of frames per second. 
@@ -41,9 +39,8 @@ public abstract class AniCfgSingle extends AniCfgAbstr {
      * Creates a single-sequence animation configuration.
      * 
      * @param numFrames the number of frames
-     * @throws IOException
      */
-    public AniCfgSingle(int numFrames) throws IOException {
+    public AniCfgSingle(int numFrames) {
         this(numFrames, DEFAULT_FPS);
     }
 
@@ -52,10 +49,10 @@ public abstract class AniCfgSingle extends AniCfgAbstr {
      * 
      * @param numFrames the number of frames
      * @param fps the number of frames per second
-     * @throws IOException
      */
-    public AniCfgSingle(int numFrames, int fps) throws IOException {
-        super(new int[][] { { 0, fps, numFrames, numFrames } });
+    public AniCfgSingle(int numFrames, int fps) {
+        super(new int[][] {});
+        zeroSequence = new int[] { 0, fps, numFrames, numFrames };
     }
 
     /* (non-Javadoc)

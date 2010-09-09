@@ -26,6 +26,8 @@ package q3m.q3.ani;
 import java.io.IOException;
 import java.io.InputStream;
 
+import q3m.Q3M;
+
 /**
  * Quake III player legs animation configuration.
  * 
@@ -36,62 +38,72 @@ public class AniCfgQ3Lower extends AniCfgQ3Both {
     /**
      * Sequence index (walk crouched).
      */
-    public static final int WALKCR = 6;
+    public static final int WALKCR = 7;
 
     /**
      * Sequence index (walk).
      */
-    public static final int WALK = 7;
+    public static final int WALK = 8;
 
     /**
      * Sequence index (run).
      */
-    public static final int RUN = 8;
+    public static final int RUN = 9;
 
     /**
      * Sequence index (back).
      */
-    public static final int BACK = 9;
+    public static final int BACK = 10;
 
     /**
      * Sequence index (swim).
      */
-    public static final int SWIM = 10;
+    public static final int SWIM = 11;
 
     /**
      * Sequence index (jump).
      */
-    public static final int JUMP = 11;
+    public static final int JUMP = 12;
 
     /**
      * Sequence index (land).
      */
-    public static final int LAND = 12;
+    public static final int LAND = 13;
 
     /**
      * Sequence index (jumpb).
      */
-    public static final int JUMPB = 13;
+    public static final int JUMPB = 14;
 
     /**
      * Sequence index (landb).
      */
-    public static final int LANDB = 14;
+    public static final int LANDB = 15;
 
     /**
      * Sequence index (idle).
      */
-    public static final int IDLE = 15;
+    public static final int IDLE = 16;
 
     /**
      * Sequence index (idle crouched).
      */
-    public static final int IDLECR = 16;
+    public static final int IDLECR = 17;
 
     /**
      * Sequence index (turn).
      */
-    public static final int TURN = 17;
+    public static final int TURN = 18;
+
+    /**
+     * Reads a Quake III player legs animation configuration from a resource.
+     * 
+     * @param path the resource path
+     * @throws IOException
+     */
+    public AniCfgQ3Lower(String path) throws IOException {
+        this(Q3M.getResStream(path));
+    }
 
     /**
      * Reads a Quake III player legs animation configuration from a stream.
