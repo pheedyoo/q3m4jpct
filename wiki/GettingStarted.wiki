@@ -1,10 +1,12 @@
 #summary Getting started with q3m4jpct.
 
-= Introduction =
-The q3m4jpct project adds support for loading [http://en.wikipedia.org/wiki/Quake_III_Arena Quake III] models to [http://www.jpct.net the jPCT 3D engine].
+= Running the demo in Eclipse =
+  # Check out the code as a project in the workspace
+  # If you aren't using [http://m2eclipse.sonatype.org m2eclipse] you'll have to manually add `lib/jpct/jpct.jar` the project classpath
+  # Right click `Demo.java` in `q3m4jpct/src/test/java` and select _Run as > Java Applet_
 
 = Loading an animated player model =
-Load the model from the default resource path (_/res/q3/models/players/..._):
+Load the model from the default resource path (`/res/q3/models/players/...`):
 {{{
 Q3Player player = new Q3Player("tankgirl");
 }}}
