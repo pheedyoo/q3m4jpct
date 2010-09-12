@@ -42,20 +42,11 @@ public class Q3Player extends Object3D {
     private static final long serialVersionUID = 1L;
 
     public String name;
-
     public String skin;
-
-    //public Q3Model gunModel;
-    //public Q3Skin gunSkin;
-
+    public Q3Weapon gunModel;
     public Q3Model headModel;
-    public Q3Skin headSkin;
-
     public Q3Model upperModel;
-    public Q3Skin upperSkin;
-
     public Q3Model lowerModel;
-    public Q3Skin lowerSkin;
 
     public Q3Player(String name) throws IOException {
         this(name, "default");
@@ -66,23 +57,22 @@ public class Q3Player extends Object3D {
         this.name = name;
         this.skin = skin;
 
-        //gunModel = new Q3Model(new MD3Model(
-        //        "/res/q3/models/weapons2/rocketl/rocketl.md3"));
+        gunModel = new Q3Weapon("machinegun");
 
         String basePath = "/res/q3/models/players/" + name;
 
-        headSkin = new Q3Skin(basePath + "/head_" + skin + ".skin");
-        headModel = new Q3Model(new MD3Model(basePath + "/head.md3"), headSkin);
+        headModel = new Q3Model(new MD3Model(basePath + "/head.md3"),
+                new Q3Skin(basePath + "/head_" + skin + ".skin"));
 
-        upperSkin = new Q3Skin(basePath + "/upper_" + skin + ".skin");
         upperModel = new Q3Model(new MD3Model(basePath + "/upper.md3"),
-                new AniCfgQ3Upper(basePath + "/animation.cfg"), upperSkin);
+                new AniCfgQ3Upper(basePath + "/animation.cfg"), new Q3Skin(
+                        basePath + "/upper_" + skin + ".skin"));
 
-        lowerSkin = new Q3Skin(basePath + "/lower_" + skin + ".skin");
         lowerModel = new Q3Model(new MD3Model(basePath + "/lower.md3"),
-                new AniCfgQ3Lower(basePath + "/animation.cfg"), lowerSkin);
+                new AniCfgQ3Lower(basePath + "/animation.cfg"), new Q3Skin(
+                        basePath + "/lower_" + skin + ".skin"));
 
-        //upperModel.attach("tag_weapon", gunModel);
+        upperModel.attach("tag_weapon", gunModel);
         upperModel.attach("tag_head", headModel);
         lowerModel.attach("tag_torso", upperModel);
 
@@ -91,14 +81,14 @@ public class Q3Player extends Object3D {
 
     public void addTo(World world) {
         world.addObject(this);
-        //gunModel.addTo(world);
+        gunModel.addTo(world);
         headModel.addTo(world);
         upperModel.addTo(world);
         lowerModel.addTo(world);
     }
 
     public void aniTick(long now) {
-        //gunModel.aniTick(now);
+        gunModel.aniTick(now);
         headModel.aniTick(now);
         upperModel.aniTick(now);
         lowerModel.aniTick(now);

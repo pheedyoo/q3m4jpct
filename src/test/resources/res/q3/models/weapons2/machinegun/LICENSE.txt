@@ -1,0 +1,26 @@
+Info:
+This is a weapon replacement for the default machinegun in Quake III.
+This new weapon is a bolter from the warhammer 40,000 universe.
+It would be most appropriatly used with my Chaos-Marine player model,
+which can be got from my website.
+
+Mesh, Skin and Sounds: Stephen "Neuralstasis" Monteith
+
+Email: stephenmonteith@hotmail.com
+
+WebSite: http://www.stephenonteith.net
+
+Polygons: 325
+
+Vertices: 431
+
+build time: about a day and a half.
+
+Use: Unzip this zip file into the baseq3 directory in Quake III,
+it should deposit a pak file (wep2-bolter.pk3) and this text file
+into the baseq3 directory.
+
+All contents are copyright Stephen "Neuralstasis" Monteith 2003.
+
+You are hereby granted permission to use and distribute these items 
+so long as they are distributed together and in an unmodified format.
