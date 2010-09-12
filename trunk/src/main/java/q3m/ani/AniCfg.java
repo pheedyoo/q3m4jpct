@@ -35,7 +35,7 @@ public interface AniCfg {
      * 
      * @param index the index into the sequence
      * @param sequence the animation sequence
-     * @return
+     * @return keyframe information
      */
     public AniFrame getAniFrame(float index, int sequence);
     

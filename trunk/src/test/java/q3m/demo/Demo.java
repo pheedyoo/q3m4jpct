@@ -1,9 +1,12 @@
 package q3m.demo;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-import javax.swing.JApplet;
+import javax.swing.JFrame;
 
 import q3m.Q3M;
 import q3m.jpct.Q3Player;
@@ -14,7 +17,7 @@ import com.threed.jpct.FrameBuffer;
 import com.threed.jpct.Object3D;
 import com.threed.jpct.World;
 
-public class Demo extends JApplet implements Runnable {
+public class Demo extends JFrame implements Runnable, WindowListener {
 
     static {
         Q3M.logLevel = Q3M.DEBUG;
@@ -32,28 +35,29 @@ public class Demo extends JApplet implements Runnable {
 
     public Q3Player player = null;
 
-    public void init() {
+    private Dimension currentDimension = null;
 
+    public Demo() {
         setSize(800, 600);
 
         buffer = new FrameBuffer(getWidth(), getHeight(),
                 FrameBuffer.SAMPLINGMODE_NORMAL);
 
         world = new World();
-        world.setAmbientLight(255, 255, 255);     
+        world.setAmbientLight(255, 255, 255);
         World.setDefaultThread(Thread.currentThread());
         sceneRoot = Object3D.createDummyObj();
         sceneRoot.rotateX((float) (-90f * Math.PI / 180f));
 
         try {
-            
+
             player = new Q3Player("tankgirl");
             //player = new Q3Player("tankgirl", "tekkgirl");
             //player = new Q3Player("tankgirl", "tintin");
-            
-            player.setUpperSequence(AniCfgQ3Upper.GESTURE);           
+
+            player.setUpperSequence(AniCfgQ3Upper.GESTURE);
             player.setLowerSequence(AniCfgQ3Lower.IDLE);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,17 +69,25 @@ public class Demo extends JApplet implements Runnable {
             world.getCamera().lookAt(player.getTransformedCenter());
         }
 
-        startThread();
-    }
+        currentDimension = getSize();
+        addWindowListener(this);
+        setLocationRelativeTo(null);
+        setVisible(true);      
 
-    public void destroy() {
-        stopThread();
+        startThread();
     }
 
     public void paint(Graphics g) {
 
         if (thread == null)
             return;
+
+        Dimension dim = getSize();
+        if (!dim.equals(currentDimension)) {
+            buffer = new FrameBuffer(getWidth(), getHeight(),
+                    FrameBuffer.SAMPLINGMODE_NORMAL);
+            currentDimension = dim;
+        }
 
         if (player != null) {
             player.aniTick(System.currentTimeMillis());
@@ -114,6 +126,34 @@ public class Demo extends JApplet implements Runnable {
         if (thread != null) {
             thread = null;
         }
+    }
+
+    public void windowActivated(WindowEvent event) {
+    }
+
+    public void windowClosed(WindowEvent event) {
+        stopThread();
+        System.exit(0);
+    }
+
+    public void windowClosing(WindowEvent event) {
+        event.getWindow().dispose();
+    }
+
+    public void windowDeactivated(WindowEvent event) {
+    }
+
+    public void windowDeiconified(WindowEvent event) {
+    }
+
+    public void windowIconified(WindowEvent event) {
+    }
+
+    public void windowOpened(WindowEvent event) {
+    }
+
+    public static void main(String[] args) {
+        new Demo();
     }
 
 }
