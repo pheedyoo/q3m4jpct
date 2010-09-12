@@ -2,7 +2,7 @@
 
 = Running the demo in Eclipse =
   # Check out the code as a project in the workspace
-  # If you aren't using [http://m2eclipse.sonatype.org m2eclipse] you'll have to manually add `lib/jpct/jpct.jar` the project classpath
+  # If you aren't using [http://m2eclipse.sonatype.org the m2eclipse plugin] you'll have to manually add `lib/jpct/jpct.jar` to the project classpath
   # Right click `Demo.java` in `q3m4jpct/src/test/java` and select _Run as > Java Applet_
 
 = Loading an animated player model =
