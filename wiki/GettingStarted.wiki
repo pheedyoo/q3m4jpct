@@ -3,7 +3,15 @@
 = Running the demo in Eclipse =
   # Check out the code as a project in the workspace
   # If you aren't using [http://m2eclipse.sonatype.org the m2eclipse plugin] you'll have to manually add `lib/jpct/jpct.jar` to the project classpath
-  # Right click `Demo.java` in `q3m4jpct/src/test/java` and select _Run as > Java Applet_
+  # Right click `Demo.java` in `q3m4jpct/src/test/java` and select _Run as > Java Application_
+
+= Running the demo via Maven =
+For the moment running the demo is bound to the _exec:java_ goal:
+{{{
+mvn exec:java
+}}}
+
+
 
 = Loading an animated player model =
 Load the model from the default resource path (`/res/q3/models/players/...`):
