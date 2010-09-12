@@ -1,0 +1,34 @@
+#summary Getting started with q3m4jpct.
+
+= Introduction =
+The q3m4jpct project adds support for loading [http://en.wikipedia.org/wiki/Quake_III_Arena Quake III] models to [http://www.jpct.net the jPCT 3D engine].
+
+= Loading an animated player model =
+Load the model from the default resource path (_/res/q3/models/players/..._):
+{{{
+Q3Player player = new Q3Player("tankgirl");
+}}}
+Set the upper and lower animation sequence:
+{{{
+player.setUpperSequence(AniCfgQ3Upper.STAND);           
+player.setLowerSequence(AniCfgQ3Lower.IDLE);
+}}}
+Add the model to a jPCT world:
+{{{
+player.addTo(world);
+}}}
+Add the model to the scene root:
+{{{
+sceneRoot.addChild(player);
+}}}
+Configure the camera to look at the model:
+{{{
+world.getCamera().setPosition(100, 0, 0);
+world.getCamera().lookAt(player.getTransformedCenter());
+}}}
+That's it.
+
+In order for the animation to play you will need to continuously update the model in your main rendering loop:
+{{{
+player.aniTick(System.currentTimeMillis());
+}}}
