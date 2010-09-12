@@ -51,11 +51,9 @@ public class Demo extends JFrame implements Runnable, WindowListener {
 
         try {
 
-            player = new Q3Player("tankgirl");
-            //player = new Q3Player("tankgirl", "tekkgirl");
-            //player = new Q3Player("tankgirl", "tintin");
+            player = new Q3Player("Chaos-Marine", "Iron-Warrior");
 
-            player.setUpperSequence(AniCfgQ3Upper.GESTURE);
+            player.setUpperSequence(AniCfgQ3Upper.STAND);
             player.setLowerSequence(AniCfgQ3Lower.IDLE);
 
         } catch (Exception e) {
@@ -65,14 +63,14 @@ public class Demo extends JFrame implements Runnable, WindowListener {
         if (player != null) {
             player.addTo(world);
             sceneRoot.addChild(player);
-            world.getCamera().setPosition(75, 0, 0);
+            world.getCamera().setPosition(125, -25, 0);
             world.getCamera().lookAt(player.getTransformedCenter());
         }
 
         currentDimension = getSize();
         addWindowListener(this);
         setLocationRelativeTo(null);
-        setVisible(true);      
+        setVisible(true);
 
         startThread();
     }
