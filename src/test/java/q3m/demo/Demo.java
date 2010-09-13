@@ -152,6 +152,14 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
         long now = System.currentTimeMillis();
 
+        fpsCount++;
+        long elapsed = now - fpsLast;
+        if (elapsed > 1000) {
+            fps = (int) ((fpsCount * elapsed) / 1000L);
+            fpsCount = 0;
+            fpsLast = now;
+        }
+
         Dimension dim = getSize();
         if (!dim.equals(currentDimension)) {
             buffer = new FrameBuffer(dim.width, dim.height, SAMPLING_MODE);
@@ -170,14 +178,6 @@ public class Demo extends JFrame implements Runnable, WindowListener,
         buffer.update();
 
         buffer.display(g, 0, 0);
-
-        fpsCount++;
-        long elapsed = now - fpsLast;
-        if (elapsed > 1000) {
-            fps = (int) ((fpsCount * elapsed) / 1000L);
-            fpsCount = 0;
-            fpsLast = now;
-        }
 
         paintHud(g);
     }
