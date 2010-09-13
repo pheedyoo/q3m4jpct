@@ -114,19 +114,18 @@ public class Q3Model extends Object3D {
         if (aniCfg == null)
             return;
 
+        int fps = aniCfg.getFps(aniSequence);
+        int length = aniCfg.getLength(aniSequence);
+        if (length < 2)
+            return;
+
         float elapsedSecs = (float) (now - aniLast) / 1000f;
         aniLast = now;
 
-        int fps = aniCfg.getFps(aniSequence);
-        int length = aniCfg.getLength(aniSequence);
-        if (length < 2) {
-            aniIndex = 0.5f;
-        } else {
-            float elapsedIndex = (elapsedSecs * fps) / length;
-            aniIndex += elapsedIndex;
-            while (aniIndex >= 1)
-                aniIndex -= 1;
-        }
+        float elapsedIndex = (elapsedSecs * fps) / length;
+        aniIndex += elapsedIndex;
+        while (aniIndex >= 1)
+            aniIndex -= 1;
 
         animate(aniIndex, aniSequence);
     }

@@ -3,6 +3,8 @@ package q3m.demo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -17,7 +19,8 @@ import com.threed.jpct.FrameBuffer;
 import com.threed.jpct.Object3D;
 import com.threed.jpct.World;
 
-public class Demo extends JFrame implements Runnable, WindowListener {
+public class Demo extends JFrame implements Runnable, WindowListener,
+        KeyListener {
 
     static {
         Q3M.logLevel = Q3M.DEBUG;
@@ -25,7 +28,7 @@ public class Demo extends JFrame implements Runnable, WindowListener {
 
     private static final long serialVersionUID = 1L;
 
-    private static int SAMPLING_MODE = FrameBuffer.SAMPLINGMODE_OGSS_FAST;
+    private static int SAMPLING_MODE = FrameBuffer.SAMPLINGMODE_NORMAL;
 
     private volatile Thread thread = null;
 
@@ -77,11 +80,56 @@ public class Demo extends JFrame implements Runnable, WindowListener {
 
         currentDimension = new Dimension(-1, -1);
 
+        addKeyListener(this);
         addWindowListener(this);
         setLocationRelativeTo(null);
         setVisible(true);
 
         startThread();
+    }
+
+    public void keyPressed(KeyEvent e) {
+
+        int s;
+        switch (e.getKeyChar()) {
+        case 's':
+            switch (SAMPLING_MODE) {
+            case FrameBuffer.SAMPLINGMODE_OGUS:
+                setSamplingMode(FrameBuffer.SAMPLINGMODE_NORMAL);
+                break;
+            case FrameBuffer.SAMPLINGMODE_NORMAL:
+                setSamplingMode(FrameBuffer.SAMPLINGMODE_OGSS_FAST);
+                break;
+            case FrameBuffer.SAMPLINGMODE_OGSS_FAST:
+                setSamplingMode(FrameBuffer.SAMPLINGMODE_OGSS);
+                break;
+            case FrameBuffer.SAMPLINGMODE_OGSS:
+                setSamplingMode(FrameBuffer.SAMPLINGMODE_OGUS);
+                break;
+            }
+            break;
+        case 'u':
+            s = player.upperModel.aniSequence + 1;
+            if (s > AniCfgQ3Upper.STAND2) {
+                s = AniCfgQ3Upper.GESTURE;
+            }
+            player.upperModel.setAniSequence(s);
+            break;
+        case 'l':
+            s = player.lowerModel.aniSequence + 1;
+            if (s > AniCfgQ3Lower.TURN) {
+                s = AniCfgQ3Lower.WALKCR;
+            }
+            player.lowerModel.setAniSequence(s);
+            break;
+        }
+
+    }
+
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
     }
 
     public void paint(Graphics g) {
@@ -118,8 +166,120 @@ public class Demo extends JFrame implements Runnable, WindowListener {
             fpsLast = now;
         }
 
+        paintHud(g);
+    }
+
+    public void paintHud(Graphics g) {
+
+        String info = fps + " fps";
+
         g.setColor(Color.YELLOW);
-        g.drawString(fps + " fps", 10, 40);
+        g.drawString(info, 10, 40);
+
+        info = "Sampling Mode: ";
+
+        switch (SAMPLING_MODE) {
+        case FrameBuffer.SAMPLINGMODE_OGSS:
+            info += "2x oversampling";
+            break;
+        case FrameBuffer.SAMPLINGMODE_OGSS_FAST:
+            info += "1.5x oversampling";
+            break;
+        case FrameBuffer.SAMPLINGMODE_OGUS:
+            info += "0.5x undersampling";
+            break;
+        default:
+            info += "no oversampling";
+            break;
+        }
+
+        info += " (press 's' to change)";
+
+        g.setColor(Color.YELLOW);
+        g.drawString(info, 10, getHeight() - 60);
+
+        info = "Upper Anim: ";
+        switch (player.upperModel.aniSequence) {
+        case AniCfgQ3Upper.ATTACK:
+            info += "ATTACK";
+            break;
+        case AniCfgQ3Upper.ATTACK2:
+            info += "ATTACK_2";
+            break;
+        case AniCfgQ3Upper.DROP:
+            info += "DROP";
+            break;
+        case AniCfgQ3Upper.GESTURE:
+            info += "GESTURE";
+            break;
+        case AniCfgQ3Upper.RAISE:
+            info += "RAISE";
+            break;
+        case AniCfgQ3Upper.STAND:
+            info += "STAND";
+            break;
+        case AniCfgQ3Upper.STAND2:
+            info += "STAND_2";
+            break;
+        default:
+            info += "???";
+            break;
+        }
+
+        info += " (press 'u' to change) => "
+                + (int) (player.upperModel.aniIndex * 100) + "%";
+
+        g.setColor(Color.YELLOW);
+        g.drawString(info, 10, getHeight() - 40);
+
+        info = "Lower Anim: ";
+        switch (player.lowerModel.aniSequence) {
+        case AniCfgQ3Lower.BACK:
+            info += "BACK";
+            break;
+        case AniCfgQ3Lower.IDLE:
+            info += "IDLE";
+            break;
+        case AniCfgQ3Lower.IDLECR:
+            info += "IDLE_CR";
+            break;
+        case AniCfgQ3Lower.JUMP:
+            info += "JUMP";
+            break;
+        case AniCfgQ3Lower.JUMPB:
+            info += "JUMP_B";
+            break;
+        case AniCfgQ3Lower.LAND:
+            info += "LAND";
+            break;
+        case AniCfgQ3Lower.LANDB:
+            info += "LAND_B";
+            break;
+        case AniCfgQ3Lower.RUN:
+            info += "RUN";
+            break;
+        case AniCfgQ3Lower.SWIM:
+            info += "SWIM";
+            break;
+        case AniCfgQ3Lower.TURN:
+            info += "TURN";
+            break;
+        case AniCfgQ3Lower.WALK:
+            info += "WALK";
+            break;
+        case AniCfgQ3Lower.WALKCR:
+            info += "WALK_CR";
+            break;
+        default:
+            info += "???";
+            break;
+        }
+
+        info += " (press 'l' to change) => "
+                + (int) (player.lowerModel.aniIndex * 100) + "%";
+
+        g.setColor(Color.YELLOW);
+        g.drawString(info, 10, getHeight() - 20);
     }
 
     public void run() {
