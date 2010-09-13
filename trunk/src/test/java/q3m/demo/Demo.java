@@ -38,10 +38,7 @@ public class Demo extends JFrame implements Runnable, WindowListener {
     private Dimension currentDimension = null;
 
     public Demo() {
-        setSize(800, 600);
-
-        buffer = new FrameBuffer(getWidth(), getHeight(),
-                FrameBuffer.SAMPLINGMODE_NORMAL);
+        setSize(512, 512);
 
         world = new World();
         world.setAmbientLight(255, 255, 255);
@@ -51,7 +48,10 @@ public class Demo extends JFrame implements Runnable, WindowListener {
 
         try {
 
-            player = new Q3Player("Chaos-Marine", "Iron-Warrior");
+            //player = new Q3Player("Chaos-Marine", "Black-Legion");
+            player = new Q3Player("Chaos-Marine", "Iron-Warrior");// = 'default'
+            //player = new Q3Player("Chaos-Marine", "Nightlord");// = 'blue'
+            //player = new Q3Player("Chaos-Marine", "Word-Bearer");// = 'red'
 
             player.setUpperSequence(AniCfgQ3Upper.STAND);
             player.setLowerSequence(AniCfgQ3Lower.IDLE);
@@ -63,11 +63,12 @@ public class Demo extends JFrame implements Runnable, WindowListener {
         if (player != null) {
             player.addTo(world);
             sceneRoot.addChild(player);
-            world.getCamera().setPosition(125, -25, 0);
+            world.getCamera().setPosition(100, -25, 0);
             world.getCamera().lookAt(player.getTransformedCenter());
         }
 
-        currentDimension = getSize();
+        currentDimension = new Dimension(-1, -1);
+
         addWindowListener(this);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -83,13 +84,13 @@ public class Demo extends JFrame implements Runnable, WindowListener {
         Dimension dim = getSize();
         if (!dim.equals(currentDimension)) {
             buffer = new FrameBuffer(getWidth(), getHeight(),
-                    FrameBuffer.SAMPLINGMODE_NORMAL);
+                    FrameBuffer.SAMPLINGMODE_OGSS_FAST);
             currentDimension = dim;
         }
 
         if (player != null) {
             player.aniTick(System.currentTimeMillis());
-            player.rotateZ(0.01f);
+          //  player.rotateZ(0.01f);
         }
 
         buffer.clear(Color.GRAY);

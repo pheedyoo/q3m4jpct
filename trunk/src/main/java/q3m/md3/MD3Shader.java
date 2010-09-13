@@ -25,6 +25,7 @@ package q3m.md3;
 
 import java.io.IOException;
 
+import q3m.Q3M;
 import q3m.q3.Q3Stream;
 
 /**
@@ -53,6 +54,7 @@ public class MD3Shader implements MD3 {
     public MD3Shader(Q3Stream stream) throws IOException {
         name = stream.readString();
         index = stream.readInt();
+        Q3M.debug("Shader #" + index + ": " + name);
     }
 
 }
