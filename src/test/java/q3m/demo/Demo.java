@@ -25,6 +25,8 @@ public class Demo extends JFrame implements Runnable, WindowListener {
 
     private static final long serialVersionUID = 1L;
 
+    private static int SAMPLING_MODE = FrameBuffer.SAMPLINGMODE_OGSS_FAST;
+
     private volatile Thread thread = null;
 
     public FrameBuffer buffer = null;
@@ -37,8 +39,14 @@ public class Demo extends JFrame implements Runnable, WindowListener {
 
     private Dimension currentDimension = null;
 
+    int fps = 0;
+
+    private int fpsCount = 0;
+
+    private long fpsLast = System.currentTimeMillis();
+
     public Demo() {
-        setSize(512, 512);
+        setSize(600, 600);
 
         world = new World();
         world.setAmbientLight(255, 255, 255);
@@ -81,16 +89,17 @@ public class Demo extends JFrame implements Runnable, WindowListener {
         if (thread == null)
             return;
 
+        long now = System.currentTimeMillis();
+
         Dimension dim = getSize();
         if (!dim.equals(currentDimension)) {
-            buffer = new FrameBuffer(getWidth(), getHeight(),
-                    FrameBuffer.SAMPLINGMODE_OGSS_FAST);
+            buffer = new FrameBuffer(dim.width, dim.height, SAMPLING_MODE);
             currentDimension = dim;
         }
 
         if (player != null) {
-            player.aniTick(System.currentTimeMillis());
-          //  player.rotateZ(0.01f);
+            player.aniTick(now);
+            player.rotateZ(0.01f);
         }
 
         buffer.clear(Color.GRAY);
@@ -100,16 +109,32 @@ public class Demo extends JFrame implements Runnable, WindowListener {
         buffer.update();
 
         buffer.display(g, 0, 0);
+
+        fpsCount++;
+        long elapsed = now - fpsLast;
+        if (elapsed > 1000) {
+            fps = (int) ((fpsCount * elapsed) / 1000L);
+            fpsCount = 0;
+            fpsLast = now;
+        }
+
+        g.setColor(Color.YELLOW);
+        g.drawString(fps + " fps", 10, 40);
     }
 
     public void run() {
         while (thread == Thread.currentThread()) {
             repaint();
             try {
-                Thread.sleep(20);
+                Thread.yield();
             } catch (Exception ignored) {
             }
         }
+    }
+
+    public void setSamplingMode(int samplingMode) {
+        SAMPLING_MODE = samplingMode;
+        currentDimension = new Dimension(-1, -1);
     }
 
     public void startThread() {
@@ -118,7 +143,6 @@ public class Demo extends JFrame implements Runnable, WindowListener {
             thread.setDaemon(true);
             thread.start();
         }
-
     }
 
     public void stopThread() {

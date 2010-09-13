@@ -76,9 +76,15 @@ public class Q3Tag extends Object3D {
      * @param f2 the second frame
      */
     public void transform(float index, int f1, int f2) {
-        Matrix m = new Matrix();
-        m.interpolate(matrix[f1], matrix[f2], index);
+        Matrix m;
+        if ((f1 == f2) || (index < 0.001f)) {
+            m = matrix[f1];
+        } else if (index > 0.999f) {
+            m = matrix[f2];
+        } else {
+            m = new Matrix();
+            m.interpolate(matrix[f1], matrix[f2], index);
+        }
         setRotationMatrix(m); // applies translation, too
     }
-
 }
