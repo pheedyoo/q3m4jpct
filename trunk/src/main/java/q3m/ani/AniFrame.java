@@ -52,7 +52,7 @@ public class AniFrame {
         int length = aniCfg.getLength(sequence);
         
         if(length < 2) {
-            frameIndex = 0.5f;
+            frameIndex = 0;
             frame1 = first;
             frame2 = first;
             return;
