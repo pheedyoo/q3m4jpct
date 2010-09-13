@@ -80,7 +80,7 @@ public class MD3Model implements MD3 {
     public MD3Model(InputStream md3) throws IOException {
         try {
 
-            Q3Stream stream = new Q3Stream(md3);
+            Q3Stream stream = new Q3Stream(md3);            
 
             int ident = stream.readInt();
             if (ident != IDENT)

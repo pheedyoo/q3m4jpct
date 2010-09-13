@@ -45,6 +45,10 @@ public class Q3Stream implements Q3 {
      * @throws IOException
      */
     public Q3Stream(InputStream in) throws IOException {
+
+        if (in == null)
+            throw new IOException("InputStream must not be null");
+
         stream = new DataInputStream(in);
         offset = 0;
         b4 = new byte[4];
@@ -85,7 +89,7 @@ public class Q3Stream implements Q3 {
         offset += length;
         return b;
     }
-    
+
     /**
      * Reads a byte value.
      * 
@@ -121,11 +125,9 @@ public class Q3Stream implements Q3 {
         byte[] b = read(dim * 4);
         float[] v = new float[dim];
         for (int i = 0; i < dim; i++) {
-            v[i] = Float.intBitsToFloat(
-                        (b[off + 0] & 0xff) |
-                       ((b[off + 1] & 0xff) << 8) | 
-                       ((b[off + 2] & 0xff) << 16) |
-                       ((b[off + 3] & 0xff) << 24));
+            v[i] = Float.intBitsToFloat((b[off + 0] & 0xff)
+                    | ((b[off + 1] & 0xff) << 8) | ((b[off + 2] & 0xff) << 16)
+                    | ((b[off + 3] & 0xff) << 24));
             off += 4;
         }
 
@@ -147,11 +149,10 @@ public class Q3Stream implements Q3 {
         float[][] v = new float[dim1][dim2];
         for (int i1 = 0; i1 < dim1; i1++) {
             for (int i2 = 0; i2 < dim2; i2++) {
-                v[i1][i2] = Float.intBitsToFloat(
-                         (b[off + 0] & 0xff) |
-                        ((b[off + 1] & 0xff) << 8) |
-                        ((b[off + 2] & 0xff) << 16) |
-                        ((b[off + 3] & 0xff) << 24));
+                v[i1][i2] = Float.intBitsToFloat((b[off + 0] & 0xff)
+                        | ((b[off + 1] & 0xff) << 8)
+                        | ((b[off + 2] & 0xff) << 16)
+                        | ((b[off + 3] & 0xff) << 24));
                 off += 4;
             }
         }
@@ -168,10 +169,7 @@ public class Q3Stream implements Q3 {
     public int readInt() throws IOException {
         stream.readFully(b4);
         offset += 4;
-        return ( (b4[0] & 0xff) | 
-                ((b4[1] & 0xff) << 8) | 
-                ((b4[2] & 0xff) << 16) | 
-                ((b4[3] & 0xff) << 24));
+        return ((b4[0] & 0xff) | ((b4[1] & 0xff) << 8) | ((b4[2] & 0xff) << 16) | ((b4[3] & 0xff) << 24));
     }
 
     /**
@@ -187,10 +185,8 @@ public class Q3Stream implements Q3 {
         byte[] b = read(dim * 4);
         int[] v = new int[dim];
         for (int i = 0; i < dim; i++) {
-            v[i] =   (b[off + 0] & 0xff) | 
-                    ((b[off + 1] & 0xff) << 8) |
-                    ((b[off + 2] & 0xff) << 16) |
-                    ((b[off + 3] & 0xff) << 24);
+            v[i] = (b[off + 0] & 0xff) | ((b[off + 1] & 0xff) << 8)
+                    | ((b[off + 2] & 0xff) << 16) | ((b[off + 3] & 0xff) << 24);
             off += 4;
         }
 
@@ -212,17 +208,16 @@ public class Q3Stream implements Q3 {
         int[][] v = new int[dim1][dim2];
         for (int i1 = 0; i1 < dim1; i1++) {
             for (int i2 = 0; i2 < dim2; i2++) {
-                v[i1][i2] =  (b[off + 0] & 0xff) |
-                            ((b[off + 1] & 0xff) << 8) |
-                            ((b[off + 2] & 0xff) << 16) |
-                            ((b[off + 3] & 0xff) << 24);
+                v[i1][i2] = (b[off + 0] & 0xff) | ((b[off + 1] & 0xff) << 8)
+                        | ((b[off + 2] & 0xff) << 16)
+                        | ((b[off + 3] & 0xff) << 24);
                 off += 4;
             }
         }
 
         return v;
     }
-    
+
     /**
      * Reads a signed short value.
      * 
@@ -232,9 +227,9 @@ public class Q3Stream implements Q3 {
     public int readShortSigned() throws IOException {
         stream.readFully(b4, 0, 2);
         offset += 2;
-        return (short) (b4[0] & 0xff) |  (short) ((b4[1] & 0xff) << 8);
+        return (short) (b4[0] & 0xff) | (short) ((b4[1] & 0xff) << 8);
     }
-    
+
     /**
      * Reads an unsigned short value.
      * 

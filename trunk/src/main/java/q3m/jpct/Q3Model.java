@@ -28,6 +28,7 @@ import java.util.Hashtable;
 import q3m.ani.AniCfg;
 import q3m.ani.AniCfgSingle;
 import q3m.ani.AniFrame;
+import q3m.md3.MD3Frame;
 import q3m.md3.MD3Model;
 
 import com.threed.jpct.Object3D;
@@ -58,6 +59,8 @@ public class Q3Model extends Object3D {
 
     public Q3Skin skin;
 
+    public MD3Frame[] frames;
+
     public Q3Model(MD3Model md3) {
         this(md3, null);
     }
@@ -70,6 +73,7 @@ public class Q3Model extends Object3D {
         super(Object3D.createDummyObj());
         this.aniCfg = aniCfg;
         this.skin = skin;
+        this.frames = md3.frames;
 
         tags = new Q3Tag[md3.tags.length];
         tagHash = new Hashtable();
@@ -100,6 +104,8 @@ public class Q3Model extends Object3D {
 
         AniFrame f = aniCfg.getAniFrame(index, sequence);
 
+        // translate(new SimpleVector(frames[f.frame1].localOrigin));
+
         for (int t = 0; t < tags.length; t++) {
             tags[t].transform(f.frameIndex, f.frame1, f.frame2);
         }
@@ -116,16 +122,17 @@ public class Q3Model extends Object3D {
 
         int fps = aniCfg.getFps(aniSequence);
         int length = aniCfg.getLength(aniSequence);
-        if (length < 2)
-            return;
-
-        float elapsedSecs = (float) (now - aniLast) / 1000f;
-        aniLast = now;
-
-        float elapsedIndex = (elapsedSecs * fps) / length;
-        aniIndex += elapsedIndex;
-        while (aniIndex >= 1)
-            aniIndex -= 1;
+        if (length < 2) {
+            aniIndex = 0;
+            aniLast = now;
+        } else {
+            float elapsedSecs = (float) (now - aniLast) / 1000f;
+            aniLast = now;
+            float elapsedIndex = (elapsedSecs * fps) / length;
+            aniIndex += elapsedIndex;
+            while (aniIndex >= 1)
+                aniIndex -= 1;
+        }
 
         animate(aniIndex, aniSequence);
     }
