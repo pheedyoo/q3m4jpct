@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 
 import q3m.Q3M;
 import q3m.jpct.Q3Player;
+import q3m.q3.ani.AniCfgQ3Both;
 import q3m.q3.ani.AniCfgQ3Lower;
 import q3m.q3.ani.AniCfgQ3Upper;
 
@@ -111,16 +112,28 @@ public class Demo extends JFrame implements Runnable, WindowListener,
         case 'u':
             s = player.upperModel.aniSequence + 1;
             if (s > AniCfgQ3Upper.STAND2) {
-                s = AniCfgQ3Upper.GESTURE;
+                s = AniCfgQ3Both.DEATH1;
             }
             player.upperModel.setAniSequence(s);
+            if (s <= AniCfgQ3Both.DEAD3) {
+                player.lowerModel.setAniSequence(s);
+            }
+            if (s == (AniCfgQ3Both.DEAD3 + 1)) {
+                player.lowerModel.setAniSequence(AniCfgQ3Lower.IDLE);
+            }
             break;
         case 'l':
             s = player.lowerModel.aniSequence + 1;
             if (s > AniCfgQ3Lower.TURN) {
-                s = AniCfgQ3Lower.WALKCR;
+                s = AniCfgQ3Both.DEATH1;
             }
             player.lowerModel.setAniSequence(s);
+            if (s <= AniCfgQ3Both.DEAD3) {
+                player.upperModel.setAniSequence(s);
+            }
+            if (s == (AniCfgQ3Both.DEAD3 + 1)) {
+                player.upperModel.setAniSequence(AniCfgQ3Upper.STAND);
+            }
             break;
         }
 
@@ -200,6 +213,24 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
         info = "Upper Anim: ";
         switch (player.upperModel.aniSequence) {
+        case AniCfgQ3Both.DEATH1:
+            info += "DEATH_1";
+            break;
+        case AniCfgQ3Both.DEAD1:
+            info += "DEAD_1";
+            break;
+        case AniCfgQ3Both.DEATH2:
+            info += "DEATH_2";
+            break;
+        case AniCfgQ3Both.DEAD2:
+            info += "DEAD_2";
+            break;
+        case AniCfgQ3Both.DEATH3:
+            info += "DEATH_3";
+            break;
+        case AniCfgQ3Both.DEAD3:
+            info += "DEAD_3";
+            break;
         case AniCfgQ3Upper.ATTACK:
             info += "ATTACK";
             break;
@@ -234,6 +265,24 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
         info = "Lower Anim: ";
         switch (player.lowerModel.aniSequence) {
+        case AniCfgQ3Both.DEATH1:
+            info += "DEATH_1";
+            break;
+        case AniCfgQ3Both.DEAD1:
+            info += "DEAD_1";
+            break;
+        case AniCfgQ3Both.DEATH2:
+            info += "DEATH_2";
+            break;
+        case AniCfgQ3Both.DEAD2:
+            info += "DEAD_2";
+            break;
+        case AniCfgQ3Both.DEATH3:
+            info += "DEATH_3";
+            break;
+        case AniCfgQ3Both.DEAD3:
+            info += "DEAD_3";
+            break;
         case AniCfgQ3Lower.BACK:
             info += "BACK";
             break;
