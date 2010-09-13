@@ -104,8 +104,6 @@ public class Q3Model extends Object3D {
 
         AniFrame f = aniCfg.getAniFrame(index, sequence);
 
-        // translate(new SimpleVector(frames[f.frame1].localOrigin));
-
         for (int t = 0; t < tags.length; t++) {
             tags[t].transform(f.frameIndex, f.frame1, f.frame2);
         }
@@ -130,7 +128,7 @@ public class Q3Model extends Object3D {
             aniLast = now;
             float elapsedIndex = (elapsedSecs * fps) / length;
             aniIndex += elapsedIndex;
-            while (aniIndex >= 1)
+            while (aniIndex > 0.999f)
                 aniIndex -= 1;
         }
 
