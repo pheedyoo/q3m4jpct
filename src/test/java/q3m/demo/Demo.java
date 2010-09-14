@@ -50,43 +50,54 @@ public class Demo extends JFrame implements Runnable, WindowListener,
     private long fpsLast = System.currentTimeMillis();
 
     public Demo() {
-        setSize(600, 600);
-
-        world = new World();
-        world.setAmbientLight(255, 255, 255);
-        World.setDefaultThread(Thread.currentThread());
-        sceneRoot = Object3D.createDummyObj();
-        sceneRoot.rotateX((float) (-90f * Math.PI / 180f));
-
-        try {
-
-            //player = new Q3Player("Chaos-Marine", "Black-Legion");
-            player = new Q3Player("Chaos-Marine", "Iron-Warrior");// = 'default'
-            //player = new Q3Player("Chaos-Marine", "Nightlord");// = 'blue'
-            //player = new Q3Player("Chaos-Marine", "Word-Bearer");// = 'red'
-
-            player.setUpperSequence(AniCfgQ3Upper.STAND);
-            player.setLowerSequence(AniCfgQ3Lower.IDLE);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (player != null) {
-            player.addTo(world);
-            sceneRoot.addChild(player);
-            world.getCamera().setPosition(100, -25, 0);
-            world.getCamera().lookAt(player.getTransformedCenter());
-        }
 
         currentDimension = new Dimension(-1, -1);
 
         addKeyListener(this);
         addWindowListener(this);
+
+        setTitle("q3m4jPCT Demo");
+        setSize(600, 600);
+
         setLocationRelativeTo(null);
         setVisible(true);
 
+        repaint();
+
         startThread();
+
+        Thread loaderThread = new Thread() {
+            public void run() {
+                try {
+
+                    //Q3Player p = new Q3Player("Chaos-Marine", "Black-Legion");
+                    Q3Player p = new Q3Player("Chaos-Marine", "Iron-Warrior");// = 'default'
+                    //Q3Player p = new Q3Player("Chaos-Marine", "Nightlord");// = 'blue'
+                    //Q3Player p = new Q3Player("Chaos-Marine", "Word-Bearer");// = 'red'
+
+                    p.setUpperSequence(AniCfgQ3Upper.STAND);
+                    p.setLowerSequence(AniCfgQ3Lower.IDLE);
+
+                    world = new World();
+                    world.setAmbientLight(255, 255, 255);
+                    World.setDefaultThread(Thread.currentThread());
+                    sceneRoot = Object3D.createDummyObj();
+                    sceneRoot.rotateX((float) (-90f * Math.PI / 180f));
+
+                    p.addTo(world);
+                    sceneRoot.addChild(p);
+                    world.getCamera().setPosition(100, -25, 0);
+                    world.getCamera().lookAt(p.getTransformedCenter());
+
+                    player = p;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        loaderThread.setDaemon(true);
+        loaderThread.start();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -147,8 +158,13 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
     public void paint(Graphics g) {
 
-        if (thread == null)
+        if (player == null) {
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.WHITE);
+            g.drawString("loading...", 10, 40);
             return;
+        }
 
         long now = System.currentTimeMillis();
 
@@ -160,26 +176,23 @@ public class Demo extends JFrame implements Runnable, WindowListener,
             fpsLast = now;
         }
 
+        player.aniTick(now);
+        player.rotateZ(0.01f);
+
         Dimension dim = getSize();
-        if (!dim.equals(currentDimension)) {
+        if ((buffer == null) || (!dim.equals(currentDimension))) {
             buffer = new FrameBuffer(dim.width, dim.height, SAMPLING_MODE);
             currentDimension = dim;
         }
 
-        if (player != null) {
-            player.aniTick(now);
-            player.rotateZ(0.01f);
-        }
-
         buffer.clear(Color.GRAY);
-
         world.renderScene(buffer);
         world.draw(buffer);
         buffer.update();
 
-        buffer.display(g, 0, 0);
+        paintHud(buffer.getGraphics());
 
-        paintHud(g);
+        buffer.display(g, 0, 0);
     }
 
     public void paintHud(Graphics g) {
@@ -333,11 +346,8 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
     public void run() {
         while (thread == Thread.currentThread()) {
+            Thread.yield();
             repaint();
-            try {
-                Thread.yield();
-            } catch (Exception ignored) {
-            }
         }
     }
 
