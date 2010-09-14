@@ -49,6 +49,8 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
     private long fpsLast = System.currentTimeMillis();
 
+    private Exception error = null;
+
     public Demo() {
 
         currentDimension = new Dimension(-1, -1);
@@ -91,6 +93,8 @@ public class Demo extends JFrame implements Runnable, WindowListener,
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    error = e;
+                    repaint();
                 }
             }
         };
@@ -160,7 +164,11 @@ public class Demo extends JFrame implements Runnable, WindowListener,
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.WHITE);
-            g.drawString("loading...", 10, 40);
+            if (error != null) {
+                g.drawString("ERROR: " + error.getMessage(), 20, 50);
+            } else {
+                g.drawString("loading...", 20, 50);
+            }
             return;
         }
 
