@@ -58,6 +58,9 @@ public class TextureUtil {
 
     private static Texture loadTexture(String texName, Object3D mesh) {
 
+        while(texName.startsWith("/"))
+            texName = texName.substring(1);
+        
         String fn = "/res/q3/" + texName;
 
         Texture tx = loadTextureImage(fn, mesh);
