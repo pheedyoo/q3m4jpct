@@ -80,7 +80,7 @@ public class MD3Model implements MD3 {
     public MD3Model(InputStream md3) throws IOException {
         try {
 
-            Q3Stream stream = new Q3Stream(md3);            
+            Q3Stream stream = new Q3Stream(md3);
 
             int ident = stream.readInt();
             if (ident != IDENT)
@@ -105,6 +105,12 @@ public class MD3Model implements MD3 {
             int offsetMeshes = stream.readInt();
             int offsetEnd = stream.readInt();
 
+            if (MD3Config.ENFORCE_LIMITS) {
+                MD3Config.limit("MAX_FRAMES", MAX_FRAMES, numFrames);
+                MD3Config.limit("MAX_TAGS", MAX_TAGS, numTags);
+                MD3Config.limit("MAX_SURFACES", MAX_SURFACES, numMeshes);
+            }
+
             Q3M.debug("<MD3ModelHeader>");
             Q3M.debug("  Name: " + name);
             Q3M.debug(" Flags: " + flags);
@@ -115,8 +121,9 @@ public class MD3Model implements MD3 {
             Q3M.debug("   End: " + offsetEnd);
             Q3M.debug("</MD3ModelHeader>");
 
-            if (numMeshes < 1)
+            if (numMeshes < 1) {
                 meshes = new MD3Mesh[0];
+            }
 
             int skipped = 0;
             int offset = stream.getOffset();

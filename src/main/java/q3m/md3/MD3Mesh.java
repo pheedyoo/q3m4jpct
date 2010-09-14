@@ -95,6 +95,13 @@ public class MD3Mesh implements MD3 {
         int offVertices = stream.readInt();
         int offEnd = stream.readInt();
 
+        if (MD3Config.ENFORCE_LIMITS) {
+            MD3Config.limit("MAX_FRAMES", MAX_FRAMES, numFrames);
+            MD3Config.limit("MAX_SHADERS", MAX_SHADERS, numShaders);
+            MD3Config.limit("MAX_VERTICES", MAX_VERTS, numVertices);
+            MD3Config.limit("MAX_TRIANGLES", MAX_TRIANGLES, numTriangles);
+        }
+
         Q3M.debug("<MD3MeshHeader>");
         Q3M.debug("     Name: " + name);
         Q3M.debug("   Frames: " + numFrames);
@@ -105,8 +112,9 @@ public class MD3Mesh implements MD3 {
         Q3M.debug("      End: " + offEnd);
         Q3M.debug("</MD3MeshHeader>");
 
-        if (numShaders < 1)
+        if (numShaders < 1) {
             shaders = new MD3Shader[0];
+        }
 
         int skipped = 0;
         long offset = stream.getOffset() - offsetStart;
