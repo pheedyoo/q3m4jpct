@@ -62,10 +62,6 @@ public class Demo extends JFrame implements Runnable, WindowListener,
         setLocationRelativeTo(null);
         setVisible(true);
 
-        repaint();
-
-        startThread();
-
         Thread loaderThread = new Thread() {
             public void run() {
                 try {
@@ -90,6 +86,8 @@ public class Demo extends JFrame implements Runnable, WindowListener,
                     world.getCamera().lookAt(p.getTransformedCenter());
 
                     player = p;
+
+                    startThread();
 
                 } catch (Exception e) {
                     e.printStackTrace();
