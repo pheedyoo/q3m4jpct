@@ -99,7 +99,7 @@ public class Q3Mesh extends Object3D {
                 anim.createSubSequence("seq #" + 1);
                 int first = parent.aniCfg.getFirst(0);
                 int length = parent.aniCfg.getLength(0);
-                for (f = first; f < (first + length); f++) {
+                for (f = (first + 1); f < (first + length); f++) {
                     Object3D m = new Object3D(numTriangles);
                     m.disableVertexSharing();
                     for (int t = 0; t < numTriangles; t++) {
@@ -118,7 +118,10 @@ public class Q3Mesh extends Object3D {
                     anim.createSubSequence("seq #" + i);
                     int first = parent.aniCfg.getFirst(i);
                     int length = parent.aniCfg.getLength(i);
-                    for (f = first; f < (first + length); f++) {                     
+                    for (f = first; f < (first + length); f++) {
+                        if ((i == 1) && (f == first)) {
+                            continue;
+                        }
                         Object3D m = new Object3D(numTriangles);
                         m.disableVertexSharing();
                         for (int t = 0; t < numTriangles; t++) {

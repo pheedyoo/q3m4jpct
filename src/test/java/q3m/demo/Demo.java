@@ -92,8 +92,9 @@ public class Demo extends JFrame implements Runnable, WindowListener,
                     startThread();
 
                 } catch (Exception e) {
-                    e.printStackTrace();
                     error = e;
+                    Q3M.error(e.getMessage());
+                    e.printStackTrace();
                     repaint();
                 }
             }
@@ -351,7 +352,7 @@ public class Demo extends JFrame implements Runnable, WindowListener,
     }
 
     public void run() {
-        while (thread == Thread.currentThread()) {
+        while ((thread == Thread.currentThread()) && (error == null)) {
             Thread.yield();
             repaint();
         }
