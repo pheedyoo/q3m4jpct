@@ -36,6 +36,12 @@ public class Q3Weapon extends Q3Model {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates a weapon model by name.
+     * 
+     * @param name the model name
+     * @throws IOException
+     */
     public Q3Weapon(String name) throws IOException {
         super(new MD3Model("/res/q3/models/weapons2/" + name + "/" + name
                 + ".md3"));

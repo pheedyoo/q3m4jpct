@@ -51,7 +51,7 @@ public class AniCfgSingle extends AniCfgAbstr {
      * @param fps the number of frames per second
      */
     public AniCfgSingle(int numFrames, int fps) {
-        super(new int[][] {});
+        super(new int[][] {}, new String[] { ZERO_SEQUENCE_NAME });
         zeroSequence = new int[] { 0, fps, numFrames, numFrames };
     }
 

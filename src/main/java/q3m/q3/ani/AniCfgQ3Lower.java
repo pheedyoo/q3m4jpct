@@ -38,7 +38,7 @@ public class AniCfgQ3Lower extends AniCfgQ3Both {
     /**
      * Sequence index (walk crouched).
      */
-    public static final int WALKCR = 7;
+    public static final int WALK_CR = 7;
 
     /**
      * Sequence index (walk).
@@ -71,14 +71,14 @@ public class AniCfgQ3Lower extends AniCfgQ3Both {
     public static final int LAND = 13;
 
     /**
-     * Sequence index (jumpb).
+     * Sequence index (jump b).
      */
-    public static final int JUMPB = 14;
+    public static final int JUMP_B = 14;
 
     /**
-     * Sequence index (landb).
+     * Sequence index (land b).
      */
-    public static final int LANDB = 15;
+    public static final int LAND_B = 15;
 
     /**
      * Sequence index (idle).
@@ -88,7 +88,7 @@ public class AniCfgQ3Lower extends AniCfgQ3Both {
     /**
      * Sequence index (idle crouched).
      */
-    public static final int IDLECR = 17;
+    public static final int IDLE_CR = 17;
 
     /**
      * Sequence index (turn).
@@ -112,7 +112,10 @@ public class AniCfgQ3Lower extends AniCfgQ3Both {
      * @throws IOException
      */
     public AniCfgQ3Lower(InputStream in) throws IOException {
-        super(in, 25);
+        super(in, 25, new String[] { ZERO_SEQUENCE_NAME, "DEATH_1", "DEAD_1",
+                "DEATH_2", "DEAD_2", "DEATH_3", "DEAD_3", "WALK_CR", "WALK",
+                "RUN", "BACK", "SWIM", "JUMP", "LAND", "JUMP_B", "LAND_B",
+                "IDLE", "IDLE_CR", "TURN" });
         int[][] v = new int[18][4];
         System.arraycopy(values, 0, v, 0, 6);
         System.arraycopy(values, 13, v, 6, 12);

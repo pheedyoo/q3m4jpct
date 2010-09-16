@@ -25,6 +25,7 @@ package q3m.jpct;
 
 import java.io.IOException;
 
+import q3m.Q3M;
 import q3m.jpct.util.TextureUtil;
 import q3m.md3.MD3Mesh;
 
@@ -42,14 +43,22 @@ public class Q3Mesh extends Object3D {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The mesh name.
+     */
     public String name;
 
+    /**
+     * Creates a jPCT mesh from an MD3 mesh.
+     * 
+     * @param parent the parent jPCT model
+     * @param md3 the MD3 mesh
+     * @param skin the skin
+     */
     public Q3Mesh(Q3Model parent, MD3Mesh md3, Q3Skin skin) {
         super(md3.triangles.length);
         this.name = md3.name;
-
-        disableVertexSharing();
-
+ 
         float scaleUV = 1f;
         boolean hasTexture = false;
         String texName = null;
@@ -68,6 +77,8 @@ public class Q3Mesh extends Object3D {
             } catch (IOException ignored) {
             }
         }
+        
+        Q3M.debug("building animated mesh: " + name);
 
         int numFrames = md3.vertices.length;
         int numTriangles = md3.triangles.length;
@@ -77,6 +88,8 @@ public class Q3Mesh extends Object3D {
             f = parent.aniCfg.getFirst(0);
         }
 
+        disableVertexSharing();
+        
         for (int t = 0; t < numTriangles; t++) {
             v1 = md3.triangles[t][2]; // jPCT uses
             v2 = md3.triangles[t][1]; // counter-clockwise
@@ -96,7 +109,7 @@ public class Q3Mesh extends Object3D {
         if ((numFrames > 1) && (parent.aniCfg != null)) {
             Animation anim = new Animation(parent.aniCfg.getDefinedKeyFrames());
             if (parent.aniCfg.getDefinedSequences() == 0) {
-                anim.createSubSequence("seq #" + 1);
+                anim.createSubSequence("sequence #1");
                 int first = parent.aniCfg.getFirst(0);
                 int length = parent.aniCfg.getLength(0);
                 for (f = (first + 1); f < (first + length); f++) {
@@ -115,10 +128,11 @@ public class Q3Mesh extends Object3D {
                 }
             } else {
                 for (int i = 1; i <= parent.aniCfg.getDefinedSequences(); i++) {
-                    anim.createSubSequence("seq #" + i);
+                    anim.createSubSequence(parent.aniCfg.getSequenceName(i));
                     int first = parent.aniCfg.getFirst(i);
                     int length = parent.aniCfg.getLength(i);
-                    for (f = first; f < (first + length); f++) {
+                    for (f = first; (f < (first + length))
+                            && (f < md3.vertices.length); f++) {
                         if ((i == 1) && (f == first)) {
                             continue;
                         }
@@ -146,6 +160,7 @@ public class Q3Mesh extends Object3D {
 
         if (hasTexture) {
             setTexture(texName);
+            //  setTransparency(0);
         }
     }
 }

@@ -38,6 +38,16 @@ import q3m.Q3M;
  * @author nlotz
  */
 public abstract class AniCfgAbstr implements AniCfg {
+    
+    /**
+     * Name of sequence #0.
+     */
+    public static final String ZERO_SEQUENCE_NAME = "jPCT sequence #0";
+
+    /**
+     * Sequence names.
+     */
+    protected String[] sequences;
 
     /**
      * Configuration values.
@@ -53,9 +63,11 @@ public abstract class AniCfgAbstr implements AniCfg {
      * Creates an animation configuration from configuration values.
      * 
      * @param values the configuration values
+     * @param sequences the sequence names
      */
-    public AniCfgAbstr(int[][] values) {
+    public AniCfgAbstr(int[][] values, String[] sequences) {
         this.values = values;
+        this.sequences = sequences;
         zeroSequence = null;
     }
 
@@ -64,10 +76,12 @@ public abstract class AniCfgAbstr implements AniCfg {
      * 
      * @param path the resource path
      * @param rows the number of animation sequences to read
+     * @param sequences the sequence names
      * @throws IOException
      */
-    public AniCfgAbstr(String path, int rows) throws IOException {
-        this(Q3M.getResStream(path), rows);
+    public AniCfgAbstr(String path, int rows, String[] sequences)
+            throws IOException {
+        this(Q3M.getResStream(path), rows, sequences);
     }
 
     /**
@@ -75,14 +89,15 @@ public abstract class AniCfgAbstr implements AniCfg {
      * 
      * @param in the stream to read from
      * @param rows the number of animation sequences to read
+     * @param sequences the sequence names
      * @throws IOException
      */
-    public AniCfgAbstr(InputStream in, int rows) throws IOException {
+    public AniCfgAbstr(InputStream in, int rows, String[] sequences)
+            throws IOException {
         Q3M.debug("reading " + rows + " animation sequences");
-
+        this.sequences = sequences;
         values = new int[rows][4];
         zeroSequence = null;
-
         int row = 0;
         try {
             String line = null;
@@ -130,6 +145,27 @@ public abstract class AniCfgAbstr implements AniCfg {
     }
 
     /* (non-Javadoc)
+     * @see q3m.anim.AnimCfg#getDefinedKeyFrames()
+     */
+    public int getDefinedKeyFrames() {
+        if (values.length == 0) {
+            return zeroSequence[getLengthIndex()];
+        }
+        int total = 0;
+        for (int s = 0; s < values.length; s++) {
+            total += values[s][getLengthIndex()];
+        }
+        return total;
+    }
+
+    /* (non-Javadoc)
+     * @see q3m.anim.AnimCfg#getDefinedSequences()
+     */
+    public int getDefinedSequences() {
+        return values.length;
+    }
+
+    /* (non-Javadoc)
      * @see q3m.anim.AnimCfg#getFirst(int)
      */
     public int getFirst(int sequence) {
@@ -158,24 +194,10 @@ public abstract class AniCfgAbstr implements AniCfg {
     }
 
     /* (non-Javadoc)
-     * @see q3m.anim.AnimCfg#getDefinedKeyFrames()
+     * @see q3m.ani.AniCfg#getSequenceName(int)
      */
-    public int getDefinedKeyFrames() {
-        if (values.length == 0) {
-            return zeroSequence[getLengthIndex()];
-        }
-        int total = 0;
-        for (int s = 0; s < values.length; s++) {
-            total += values[s][getLengthIndex()];
-        }
-        return total;
-    }
-
-    /* (non-Javadoc)
-     * @see q3m.anim.AnimCfg#getDefinedSequences()
-     */
-    public int getDefinedSequences() {
-        return values.length;
+    public String getSequenceName(int sequence) {
+        return sequences[sequence];
     }
 
     /* (non-Javadoc)

@@ -41,17 +41,53 @@ public class Q3Player extends Object3D {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The player name.
+     */
     public String name;
+
+    /**
+     * The skin name.
+     */
     public String skin;
+
+    /**
+     * The weapon model.
+     */
     public Q3Weapon gunModel;
+
+    /**
+     * The head model.
+     */
     public Q3Model headModel;
+
+    /**
+     * The upper model.
+     */
     public Q3Model upperModel;
+
+    /**
+     * The lower model.
+     */
     public Q3Model lowerModel;
 
+    /**
+     * Creates a player model by name.
+     * 
+     * @param name the model name
+     * @throws IOException
+     */
     public Q3Player(String name) throws IOException {
         this(name, "default");
     }
 
+    /**
+     * Creates a player model by name.
+     * 
+     * @param name the model name
+     * @param skin the skin name
+     * @throws IOException
+     */
     public Q3Player(String name, String skin) throws IOException {
         super(Object3D.createDummyObj());
         this.name = name;
@@ -79,6 +115,11 @@ public class Q3Player extends Object3D {
         addChild(lowerModel);
     }
 
+    /**
+     * Adds the player to a jPCT world.
+     * 
+     * @param world the world to add the player to
+     */
     public void addTo(World world) {
         world.addObject(this);
         gunModel.addTo(world);
@@ -87,6 +128,11 @@ public class Q3Player extends Object3D {
         lowerModel.addTo(world);
     }
 
+    /**
+     * Animates the player model.
+     * 
+     * @param now the current system time
+     */
     public void aniTick(long now) {
         gunModel.aniTick(now);
         headModel.aniTick(now);
@@ -94,10 +140,20 @@ public class Q3Player extends Object3D {
         lowerModel.aniTick(now);
     }
 
+    /**
+     * Sets the animation sequence for the lower model.
+     * 
+     * @param sequence the sequence to set
+     */
     public void setLowerSequence(int sequence) {
         lowerModel.setAniSequence(sequence);
     }
 
+    /**
+     * Sets the animation sequence for the upper model.
+     * 
+     * @param sequence the sequence to set
+     */
     public void setUpperSequence(int sequence) {
         upperModel.setAniSequence(sequence);
     }

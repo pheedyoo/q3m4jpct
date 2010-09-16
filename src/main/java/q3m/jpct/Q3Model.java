@@ -43,32 +43,77 @@ public class Q3Model extends Object3D {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The animation configuration.
+     */
     public AniCfg aniCfg;
 
+    /**
+     * The current animation index.
+     */
     public float aniIndex;
 
+    /**
+     * The current animation sequence.
+     */
     public int aniSequence;
 
+    /**
+     * The last animation update.
+     */
     private long aniLast;
 
+    /**
+     * The tags.
+     */
     public Q3Tag[] tags;
 
+    /**
+     * The tags indexed by name.
+     */
     public Hashtable tagHash;
 
+    /**
+     * The meshes.
+     */
     public Q3Mesh[] meshes;
 
+    /**
+     * The skin.
+     */
     public Q3Skin skin;
 
+    /**
+     * The MD3 frames.
+     */
     public MD3Frame[] frames;
 
+    /**
+     * Creates a jPCT model from an MD3 model.
+     * 
+     * @param md3 the MD3 model
+     */
     public Q3Model(MD3Model md3) {
         this(md3, null);
     }
 
+    /**
+     * Creates a jPCT model from an MD3 model.
+     * 
+     * @param md3 the MD3 model
+     * @param skin the skin
+     */
     public Q3Model(MD3Model md3, Q3Skin skin) {
         this(md3, new AniCfgSingle(md3.frames.length), skin);
     }
 
+    /**
+     * Creates a jPCT model from an MD3 model.
+     * 
+     * @param md3 the MD3 model
+     * @param aniCfg the animation configuration
+     * @param skin the skin
+     */
     public Q3Model(MD3Model md3, AniCfg aniCfg, Q3Skin skin) {
         super(Object3D.createDummyObj());
         this.aniCfg = aniCfg;
@@ -94,12 +139,20 @@ public class Q3Model extends Object3D {
         aniLast = System.currentTimeMillis();
     }
 
+    /**
+     * Adds the model to a jPCT world.
+     * 
+     * @param world the world to add the model to
+     */
     public void addTo(World world) {
         world.addObject(this);
         world.addObjects(tags);
         world.addObjects(meshes);
     }
 
+    /* (non-Javadoc)
+     * @see com.threed.jpct.Object3D#animate(float, int)
+     */
     public void animate(float index, int sequence) {
 
         AniFrame f = aniCfg.getAniFrame(index, sequence);
@@ -113,6 +166,11 @@ public class Q3Model extends Object3D {
         }
     }
 
+    /**
+     * Animates the model.
+     * 
+     * @param now the current system time.
+     */
     public void aniTick(long now) {
 
         if (aniCfg == null)
@@ -135,6 +193,13 @@ public class Q3Model extends Object3D {
         animate(aniIndex, aniSequence);
     }
 
+    /**
+     * Attaches a model to a tag.
+     * 
+     * @param tagName the tag name
+     * @param child the model to attach
+     * @return <code>true</code> if the tag was found
+     */
     public boolean attach(String tagName, Object3D child) {
         Q3Tag tag = getTag(tagName);
         if (tag != null) {
@@ -144,10 +209,21 @@ public class Q3Model extends Object3D {
         return false;
     }
 
+    /**
+     * Finds a tag by name.
+     * 
+     * @param tagName the tag name
+     * @return the tag or <code>null</code> if not found
+     */
     public Q3Tag getTag(String tagName) {
         return (Q3Tag) tagHash.get(tagName);
     }
 
+    /**
+     * Sets the animation sequence.
+     * 
+     * @param aniSequence the sequence to set
+     */
     public void setAniSequence(int aniSequence) {
         this.aniSequence = aniSequence;
         aniIndex = 0;

@@ -39,57 +39,57 @@ public class AniCfgETHead extends AniCfgAbstr {
     /**
      * Sequence index (small eye movements, played all the time).
      */
-    public static final int IDLE1 = 1;
+    public static final int IDLE_1 = 1;
 
     /**
      * Sequence index (big blink).
      */
-    public static final int IDLE2 = 2;
+    public static final int IDLE_2 = 2;
 
     /**
      * Sequence index (look left).
      */
-    public static final int IDLE3 = 3;
+    public static final int IDLE_3 = 3;
 
     /**
      * Sequence index (large head movements).
      */
-    public static final int IDLE4 = 4;
+    public static final int IDLE_4 = 4;
 
     /**
      * Sequence index (look up).
      */
-    public static final int IDLE5 = 5;
+    public static final int IDLE_5 = 5;
 
     /**
      * Sequence index (look left and right with little head movements).
      */
-    public static final int IDLE6 = 6;
+    public static final int IDLE_6 = 6;
 
     /**
      * Sequence index (look right).
      */
-    public static final int IDLE7 = 7;
+    public static final int IDLE_7 = 7;
 
     /**
      * Sequence index (blink).
      */
-    public static final int IDLE8 = 8;
+    public static final int IDLE_8 = 8;
 
     /**
      * Sequence index (head idle in pain, played all the time).
      */
-    public static final int DAMAGED_IDLE1 = 9;
+    public static final int DAMAGED_IDLE_1 = 9;
 
     /**
      * Sequence index (not quite dead).
      */
-    public static final int DAMAGED_IDLE2 = 10;
+    public static final int DAMAGED_IDLE_2 = 10;
 
     /**
      * Sequence index (no hope left).
      */
-    public static final int DAMAGED_IDLE3 = 11;
+    public static final int DAMAGED_IDLE_3 = 11;
 
     /**
      * Sequence index (left).
@@ -145,7 +145,10 @@ public class AniCfgETHead extends AniCfgAbstr {
      * @throws IOException
      */
     public AniCfgETHead(InputStream in) throws IOException {
-        super(in, 18);
+        super(in, 18, new String[] { ZERO_SEQUENCE_NAME, "IDLE_1", "IDLE_2",
+                "IDLE_3", "IDLE_4", "IDLE_5", "IDLE_6", "IDLE_7", "IDLE_8",
+                "DAMAGED_IDLE_1", "DAMAGED_IDLE_2", "DAMAGED_IDLE_3", "LEFT",
+                "RIGHT", "ATTACK", "ATTACK_END", "PAIN_1", "PAIN_2", "SMILE" });
     }
 
     /* (non-Javadoc)
