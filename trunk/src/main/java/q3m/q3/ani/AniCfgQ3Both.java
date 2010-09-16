@@ -39,42 +39,43 @@ public abstract class AniCfgQ3Both extends AniCfgAbstr {
     /**
      * Sequence index (death 1).
      */
-    public static final int DEATH1 = 1;
+    public static final int DEATH_1 = 1;
 
     /**
      * Sequence index (dead 1).
      */
-    public static final int DEAD1 = 2;
+    public static final int DEAD_1 = 2;
 
     /**
      * Sequence index (death 2).
      */
-    public static final int DEATH2 = 3;
+    public static final int DEATH_2 = 3;
 
     /**
      * Sequence index (dead 2).
      */
-    public static final int DEAD2 = 4;
+    public static final int DEAD_2 = 4;
 
     /**
      * Sequence index (death 3).
      */
-    public static final int DEATH3 = 5;
+    public static final int DEATH_3 = 5;
 
     /**
      * Sequence index (dead 3).
      */
-    public static final int DEAD3 = 6;
+    public static final int DEAD_3 = 6;
     
     /**
      * Reads a Quake III player animation configuration from a resource path.
      * 
      * @param path the resource path
      * @param rows the number of sequences to read
+     * @param sequences the sequence names
      * @throws IOException
      */
-    protected AniCfgQ3Both(String path, int rows) throws IOException {
-        super(Q3M.getResStream(path), rows);
+    protected AniCfgQ3Both(String path, int rows, String[] sequences) throws IOException {
+        super(Q3M.getResStream(path), rows, sequences);
     }
 
     /**
@@ -82,10 +83,11 @@ public abstract class AniCfgQ3Both extends AniCfgAbstr {
      * 
      * @param in the stream to read from
      * @param rows the number of sequences to read
+     * @param sequences the sequence names
      * @throws IOException
      */
-    protected AniCfgQ3Both(InputStream in, int rows) throws IOException {
-        super(in, rows);
+    protected AniCfgQ3Both(InputStream in, int rows, String[] sequences) throws IOException {
+        super(in, rows, sequences);
     }
 
     /* (non-Javadoc)

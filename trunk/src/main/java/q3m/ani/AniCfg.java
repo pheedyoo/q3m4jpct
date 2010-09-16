@@ -114,6 +114,14 @@ public interface AniCfg {
     public int getLooping(int sequence);
     
     /**
+     * Returns the name of an animation sequence.
+     * 
+     * @param sequence the sequence to get the value for 
+     * @return the name of the sequence
+     */
+    public String getSequenceName(int sequence);
+    
+    /**
      * Returns the configuration values for the zero animation.
      * 
      * @return the configuration values for the zero animation

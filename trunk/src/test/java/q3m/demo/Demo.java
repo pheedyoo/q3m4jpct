@@ -104,7 +104,6 @@ public class Demo extends JFrame implements Runnable, WindowListener,
     }
 
     public void keyPressed(KeyEvent e) {
-
         int s;
         switch (e.getKeyChar()) {
         case 's':
@@ -125,32 +124,31 @@ public class Demo extends JFrame implements Runnable, WindowListener,
             break;
         case 'u':
             s = player.upperModel.aniSequence + 1;
-            if (s > AniCfgQ3Upper.STAND2) {
-                s = AniCfgQ3Both.DEATH1;
+            if (s > AniCfgQ3Upper.STAND_2) {
+                s = AniCfgQ3Both.DEATH_1;
             }
             player.upperModel.setAniSequence(s);
-            if (s <= AniCfgQ3Both.DEAD3) {
+            if (s <= AniCfgQ3Both.DEAD_3) {
                 player.lowerModel.setAniSequence(s);
             }
-            if (s == (AniCfgQ3Both.DEAD3 + 1)) {
+            if (s == (AniCfgQ3Both.DEAD_3 + 1)) {
                 player.lowerModel.setAniSequence(AniCfgQ3Lower.IDLE);
             }
             break;
         case 'l':
             s = player.lowerModel.aniSequence + 1;
             if (s > AniCfgQ3Lower.TURN) {
-                s = AniCfgQ3Both.DEATH1;
+                s = AniCfgQ3Both.DEATH_1;
             }
             player.lowerModel.setAniSequence(s);
-            if (s <= AniCfgQ3Both.DEAD3) {
+            if (s <= AniCfgQ3Both.DEAD_3) {
                 player.upperModel.setAniSequence(s);
             }
-            if (s == (AniCfgQ3Both.DEAD3 + 1)) {
+            if (s == (AniCfgQ3Both.DEAD_3 + 1)) {
                 player.upperModel.setAniSequence(AniCfgQ3Upper.STAND);
             }
             break;
         }
-
     }
 
     public void keyReleased(KeyEvent e) {
@@ -231,120 +229,19 @@ public class Demo extends JFrame implements Runnable, WindowListener,
         g.setColor(Color.YELLOW);
         g.drawString(info, 10, getHeight() - 60);
 
-        info = "Upper Anim: ";
-        switch (player.upperModel.aniSequence) {
-        case AniCfgQ3Both.DEATH1:
-            info += "DEATH_1";
-            break;
-        case AniCfgQ3Both.DEAD1:
-            info += "DEAD_1";
-            break;
-        case AniCfgQ3Both.DEATH2:
-            info += "DEATH_2";
-            break;
-        case AniCfgQ3Both.DEAD2:
-            info += "DEAD_2";
-            break;
-        case AniCfgQ3Both.DEATH3:
-            info += "DEATH_3";
-            break;
-        case AniCfgQ3Both.DEAD3:
-            info += "DEAD_3";
-            break;
-        case AniCfgQ3Upper.ATTACK:
-            info += "ATTACK";
-            break;
-        case AniCfgQ3Upper.ATTACK2:
-            info += "ATTACK_2";
-            break;
-        case AniCfgQ3Upper.DROP:
-            info += "DROP";
-            break;
-        case AniCfgQ3Upper.GESTURE:
-            info += "GESTURE";
-            break;
-        case AniCfgQ3Upper.RAISE:
-            info += "RAISE";
-            break;
-        case AniCfgQ3Upper.STAND:
-            info += "STAND";
-            break;
-        case AniCfgQ3Upper.STAND2:
-            info += "STAND_2";
-            break;
-        default:
-            info += "???";
-            break;
-        }
-
-        info += " (press 'u' to change) => "
+        info = "Upper Anim: "
+                + player.upperModel.aniCfg
+                        .getSequenceName(player.upperModel.aniSequence)
+                + " (press 'u' to change) => "
                 + (int) (player.upperModel.aniIndex * 100) + "%";
 
         g.setColor(Color.YELLOW);
         g.drawString(info, 10, getHeight() - 40);
 
-        info = "Lower Anim: ";
-        switch (player.lowerModel.aniSequence) {
-        case AniCfgQ3Both.DEATH1:
-            info += "DEATH_1";
-            break;
-        case AniCfgQ3Both.DEAD1:
-            info += "DEAD_1";
-            break;
-        case AniCfgQ3Both.DEATH2:
-            info += "DEATH_2";
-            break;
-        case AniCfgQ3Both.DEAD2:
-            info += "DEAD_2";
-            break;
-        case AniCfgQ3Both.DEATH3:
-            info += "DEATH_3";
-            break;
-        case AniCfgQ3Both.DEAD3:
-            info += "DEAD_3";
-            break;
-        case AniCfgQ3Lower.BACK:
-            info += "BACK";
-            break;
-        case AniCfgQ3Lower.IDLE:
-            info += "IDLE";
-            break;
-        case AniCfgQ3Lower.IDLECR:
-            info += "IDLE_CR";
-            break;
-        case AniCfgQ3Lower.JUMP:
-            info += "JUMP";
-            break;
-        case AniCfgQ3Lower.JUMPB:
-            info += "JUMP_B";
-            break;
-        case AniCfgQ3Lower.LAND:
-            info += "LAND";
-            break;
-        case AniCfgQ3Lower.LANDB:
-            info += "LAND_B";
-            break;
-        case AniCfgQ3Lower.RUN:
-            info += "RUN";
-            break;
-        case AniCfgQ3Lower.SWIM:
-            info += "SWIM";
-            break;
-        case AniCfgQ3Lower.TURN:
-            info += "TURN";
-            break;
-        case AniCfgQ3Lower.WALK:
-            info += "WALK";
-            break;
-        case AniCfgQ3Lower.WALKCR:
-            info += "WALK_CR";
-            break;
-        default:
-            info += "???";
-            break;
-        }
-
-        info += " (press 'l' to change) => "
+        info = "Lower Anim: "
+                + player.lowerModel.aniCfg
+                        .getSequenceName(player.lowerModel.aniSequence)
+                + " (press 'l' to change) => "
                 + (int) (player.lowerModel.aniIndex * 100) + "%";
 
         g.setColor(Color.YELLOW);

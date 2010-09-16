@@ -40,12 +40,27 @@ import q3m.Q3M;
  */
 public class Q3Skin {
 
+    /**
+     * Mesh shaders.
+     */
     public Hashtable shaders;
 
+    /**
+     * Reads a skin from a resource path.
+     * 
+     * @param path the resource path
+     * @throws IOException
+     */
     public Q3Skin(String path) throws IOException {
         this(Q3M.getResStream(path));
     }
 
+    /**
+     * Reads a skin from a stream.
+     * 
+     * @param in the stream to read from
+     * @throws IOException
+     */
     public Q3Skin(InputStream in) throws IOException {
 
         shaders = new Hashtable();

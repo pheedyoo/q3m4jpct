@@ -46,9 +46,9 @@ public class AniCfgQ3Upper extends AniCfgQ3Both {
     public static final int ATTACK = 8;
 
     /**
-     * Sequence index (attack2).
+     * Sequence index (attack 2).
      */
-    public static final int ATTACK2 = 9;
+    public static final int ATTACK_2 = 9;
 
     /**
      * Sequence index (drop).
@@ -66,9 +66,9 @@ public class AniCfgQ3Upper extends AniCfgQ3Both {
     public static final int STAND = 12;
 
     /**
-     * Sequence index (stand2).
+     * Sequence index (stand 2).
      */
-    public static final int STAND2 = 13;
+    public static final int STAND_2 = 13;
 
     /**
      * Reads a Quake III player torso animation configuration from a resource.
@@ -87,7 +87,9 @@ public class AniCfgQ3Upper extends AniCfgQ3Both {
      * @throws IOException
      */
     public AniCfgQ3Upper(InputStream in) throws IOException {
-        super(in, 13);
+        super(in, 13, new String[] { ZERO_SEQUENCE_NAME, "DEATH_1", "DEAD_1",
+                "DEATH_2", "DEAD_2", "DEATH_3", "DEAD_3", "GESTURE", "ATTACK",
+                "ATTACK_2", "DROP", "RAISE", "STAND", "STAND_2" });
     }
 
 }

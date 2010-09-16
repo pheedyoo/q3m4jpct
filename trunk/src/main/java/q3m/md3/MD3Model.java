@@ -121,6 +121,14 @@ public class MD3Model implements MD3 {
             Q3M.debug("   End: " + offsetEnd);
             Q3M.debug("</MD3ModelHeader>");
 
+            if (numFrames < 1) {
+                frames = new MD3Frame[0];
+            }
+
+            if (numTags < 1) {
+                tags = new MD3Tag[0];
+            }
+
             if (numMeshes < 1) {
                 meshes = new MD3Mesh[0];
             }
@@ -134,7 +142,7 @@ public class MD3Model implements MD3 {
                     for (int f = 0; f < numFrames; f++) {
                         frames[f] = new MD3Frame(stream);
                     }
-                } else if (offset == offsetTags) {
+                } else if ((tags == null) && (offset == offsetTags)) {
                     Q3M.debug("reading tag(s) at offset " + offset);
                     tags = new MD3Tag[numTags];
                     for (int f = 0; f < numFrames; f++) {
@@ -150,7 +158,7 @@ public class MD3Model implements MD3 {
                             }
                         }
                     }
-                } else if (offset == offsetMeshes) {
+                } else if ((meshes == null) && (offset == offsetMeshes)) {
                     Q3M.debug("reading mesh(es) at offset " + offset);
                     meshes = new MD3Mesh[numMeshes];
                     for (int m = 0; m < numMeshes; m++) {
