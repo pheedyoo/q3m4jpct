@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://q3m4jpct.googlecode.com/svn/webstart" href="Demo.jnlp">
+   <information>
+      <title>q3m4jPCT Demo</title>
+      <vendor>lotz.it</vendor>
+   </information>
+   <resources>     
+    <jar href="Demo.jar"/>   
+    <j2se version="1.5+" href="http://java.sun.com/products/autodl/j2se" initial-heap-size="128m" max-heap-size="512m" />
+   </resources>
+   <application-desc main-class="q3m.demo.Demo" />
+</jnlp>
