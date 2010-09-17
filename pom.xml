@@ -11,6 +11,18 @@
 	<name>q3m4jpct</name>
 	<description>Quake III models for jPCT</description>
 
+	<distributionManagement>
+		<repository>
+			<id>googlecode.q3m4jpct.repo</id>
+			<url>dav:https://q3m4jpct.googlecode.com/svn/maven-repo/</url>
+		</repository>
+		<snapshotRepository>
+			<id>googlecode.q3m4jpct.snapshots</id>
+			<url>dav:https://q3m4jpct.googlecode.com/svn/maven-snapshots/</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.threed</groupId>
@@ -30,6 +42,13 @@
 	</dependencies>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -48,12 +67,31 @@
 					</links>
 					<encoding>UTF-8</encoding>
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
