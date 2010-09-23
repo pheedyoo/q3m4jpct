@@ -23,13 +23,28 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+	<repositories>
+		<repository>
+			<id>q3m4jpct-local</id>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.threed</groupId>
 			<artifactId>jpct</artifactId>
 			<version>1.21</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/jpct/jpct.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-util</artifactId>
+			<version>2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
