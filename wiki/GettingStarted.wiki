@@ -3,7 +3,7 @@
 = Running the demo via Maven =
 For the moment running the demo is bound to the _exec:java_ goal:
 {{{
-mvn exec:java
+mvn package exec:exec
 }}}
 
 = Loading an animated player model =
