@@ -1,301 +1,45 @@
 package q3m.demo;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-import q3m.Q3M;
-import q3m.jpct.Q3Player;
-import q3m.q3.ani.AniCfgQ3Both;
-import q3m.q3.ani.AniCfgQ3Lower;
-import q3m.q3.ani.AniCfgQ3Upper;
-
-import com.threed.jpct.FrameBuffer;
-import com.threed.jpct.Object3D;
-import com.threed.jpct.World;
-
-public class Demo extends JFrame implements Runnable, WindowListener,
-        KeyListener {
-
-    static {
-        Q3M.logLevel = Q3M.DEBUG;
-    }
+public class Demo extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private static int SAMPLING_MODE = FrameBuffer.SAMPLINGMODE_NORMAL;
+    public static final int DEFAULT_WIDTH = 640;
+    public static final int DEFAULT_HEIGHT = 480;
+    public static final int MENU_WIDTH = 140;
 
-    private volatile Thread thread = null;
+    class CloseHandler extends WindowAdapter {
 
-    public FrameBuffer buffer = null;
+        public void windowClosed(WindowEvent event) {
+            System.exit(0);
+        }
 
-    public World world = null;
+        public void windowClosing(WindowEvent event) {
+            event.getWindow().dispose();
+        }
+    }
 
-    public Object3D sceneRoot = null;
-
-    public Q3Player player = null;
-
-    private Dimension currentDimension = null;
-
-    int fps = 0;
-
-    private int fpsCount = 0;
-
-    private long fpsLast = System.currentTimeMillis();
-
-    private Exception error = null;
+    protected DemoControls controls;
+    protected DemoPlayerView playerView;
 
     public Demo() {
-
-        currentDimension = new Dimension(-1, -1);
-
-        addKeyListener(this);
-        addWindowListener(this);
-
         setTitle("q3m4jPCT Demo");
-        setSize(600, 600);
-
+        getContentPane().setLayout(new BorderLayout(0, 0));
+        controls = new DemoControls(this);
+        getContentPane().add(controls, BorderLayout.EAST);
+        playerView = new DemoPlayerView(this);
+        getContentPane().add(playerView, BorderLayout.CENTER);
+        addWindowListener(new CloseHandler());
+        pack();
+        setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-
-        Thread loaderThread = new Thread() {
-            public void run() {
-                try {
-
-                    //Q3Player p = new Q3Player("Chaos-Marine", "Black-Legion");
-                    Q3Player p = new Q3Player("Chaos-Marine", "Iron-Warrior");// = 'default'
-                    //Q3Player p = new Q3Player("Chaos-Marine", "Nightlord");// = 'blue'
-                    //Q3Player p = new Q3Player("Chaos-Marine", "Word-Bearer");// = 'red'
-
-                    p.setUpperSequence(AniCfgQ3Upper.STAND);
-                    p.setLowerSequence(AniCfgQ3Lower.IDLE);
-
-                    world = new World();
-                    world.setAmbientLight(255, 255, 255);
-                    World.setDefaultThread(Thread.currentThread());
-                    sceneRoot = Object3D.createDummyObj();
-                    sceneRoot.rotateX((float) (-90f * Math.PI / 180f));
-
-                    p.addTo(world);
-                    sceneRoot.addChild(p);
-                    world.getCamera().setPosition(100, -25, 0);
-                    world.getCamera().lookAt(p.getTransformedCenter());
-
-                    player = p;
-
-                    startThread();
-
-                } catch (Exception e) {
-                    error = e;
-                    Q3M.error(e.getMessage());
-                    e.printStackTrace();
-                    repaint();
-                }
-            }
-        };
-        loaderThread.setDaemon(true);
-        loaderThread.start();
-    }
-
-    public void keyPressed(KeyEvent e) {
-        int s;
-        switch (e.getKeyChar()) {
-        case 's':
-            switch (SAMPLING_MODE) {
-            case FrameBuffer.SAMPLINGMODE_OGUS:
-                setSamplingMode(FrameBuffer.SAMPLINGMODE_NORMAL);
-                break;
-            case FrameBuffer.SAMPLINGMODE_NORMAL:
-                setSamplingMode(FrameBuffer.SAMPLINGMODE_OGSS_FAST);
-                break;
-            case FrameBuffer.SAMPLINGMODE_OGSS_FAST:
-                setSamplingMode(FrameBuffer.SAMPLINGMODE_OGSS);
-                break;
-            case FrameBuffer.SAMPLINGMODE_OGSS:
-                setSamplingMode(FrameBuffer.SAMPLINGMODE_OGUS);
-                break;
-            }
-            break;
-        case 'u':
-            s = player.upperModel.aniSequence + 1;
-            if (s > AniCfgQ3Upper.STAND_2) {
-                s = AniCfgQ3Both.DEATH_1;
-            }
-            player.upperModel.setAniSequence(s);
-            if (s <= AniCfgQ3Both.DEAD_3) {
-                player.lowerModel.setAniSequence(s);
-            }
-            if (s == (AniCfgQ3Both.DEAD_3 + 1)) {
-                player.lowerModel.setAniSequence(AniCfgQ3Lower.IDLE);
-            }
-            break;
-        case 'l':
-            s = player.lowerModel.aniSequence + 1;
-            if (s > AniCfgQ3Lower.TURN) {
-                s = AniCfgQ3Both.DEATH_1;
-            }
-            player.lowerModel.setAniSequence(s);
-            if (s <= AniCfgQ3Both.DEAD_3) {
-                player.upperModel.setAniSequence(s);
-            }
-            if (s == (AniCfgQ3Both.DEAD_3 + 1)) {
-                player.upperModel.setAniSequence(AniCfgQ3Upper.STAND);
-            }
-            break;
-        }
-    }
-
-    public void keyReleased(KeyEvent e) {
-    }
-
-    public void keyTyped(KeyEvent e) {
-    }
-
-    public void paint(Graphics g) {
-
-        if (player == null) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.WHITE);
-            if (error != null) {
-                g.drawString("ERROR: " + error.getMessage(), 20, 50);
-            } else {
-                g.drawString("loading...", 20, 50);
-            }
-            return;
-        }
-
-        long now = System.currentTimeMillis();
-
-        fpsCount++;
-        long elapsed = now - fpsLast;
-        if (elapsed > 1000) {
-            fps = (int) ((fpsCount * elapsed) / 1000L);
-            fpsCount = 0;
-            fpsLast = now;
-        }
-
-        player.aniTick(now);
-        player.rotateZ(0.01f);
-
-        Dimension dim = getSize();
-        if ((buffer == null) || (!dim.equals(currentDimension))) {
-            buffer = new FrameBuffer(dim.width, dim.height, SAMPLING_MODE);
-            currentDimension = dim;
-        }
-
-        buffer.clear(Color.GRAY);
-        world.renderScene(buffer);
-        world.draw(buffer);
-        buffer.update();
-
-        paintHud(buffer.getGraphics());
-
-        buffer.display(g, 0, 0);
-    }
-
-    public void paintHud(Graphics g) {
-
-        String info = fps + " fps";
-
-        g.setColor(Color.YELLOW);
-        g.drawString(info, 10, 40);
-
-        info = "Sampling Mode: ";
-
-        switch (SAMPLING_MODE) {
-        case FrameBuffer.SAMPLINGMODE_OGSS:
-            info += "2x oversampling";
-            break;
-        case FrameBuffer.SAMPLINGMODE_OGSS_FAST:
-            info += "1.5x oversampling";
-            break;
-        case FrameBuffer.SAMPLINGMODE_OGUS:
-            info += "0.5x undersampling";
-            break;
-        default:
-            info += "no oversampling";
-            break;
-        }
-
-        info += " (press 's' to change)";
-
-        g.setColor(Color.YELLOW);
-        g.drawString(info, 10, getHeight() - 60);
-
-        info = "Upper Anim: "
-                + player.upperModel.aniCfg
-                        .getSequenceName(player.upperModel.aniSequence)
-                + " (press 'u' to change) => "
-                + (int) (player.upperModel.aniIndex * 100) + "%";
-
-        g.setColor(Color.YELLOW);
-        g.drawString(info, 10, getHeight() - 40);
-
-        info = "Lower Anim: "
-                + player.lowerModel.aniCfg
-                        .getSequenceName(player.lowerModel.aniSequence)
-                + " (press 'l' to change) => "
-                + (int) (player.lowerModel.aniIndex * 100) + "%";
-
-        g.setColor(Color.YELLOW);
-        g.drawString(info, 10, getHeight() - 20);
-    }
-
-    public void run() {
-        while ((thread == Thread.currentThread()) && (error == null)) {
-            Thread.yield();
-            repaint();
-        }
-    }
-
-    public void setSamplingMode(int samplingMode) {
-        SAMPLING_MODE = samplingMode;
-        currentDimension = new Dimension(-1, -1);
-    }
-
-    public void startThread() {
-        if (thread == null) {
-            thread = new Thread(this);
-            thread.setDaemon(true);
-            thread.start();
-        }
-    }
-
-    public void stopThread() {
-        if (thread != null) {
-            thread = null;
-        }
-    }
-
-    public void windowActivated(WindowEvent event) {
-    }
-
-    public void windowClosed(WindowEvent event) {
-        stopThread();
-        System.exit(0);
-    }
-
-    public void windowClosing(WindowEvent event) {
-        event.getWindow().dispose();
-    }
-
-    public void windowDeactivated(WindowEvent event) {
-    }
-
-    public void windowDeiconified(WindowEvent event) {
-    }
-
-    public void windowIconified(WindowEvent event) {
-    }
-
-    public void windowOpened(WindowEvent event) {
     }
 
     public static void main(String[] args) {
