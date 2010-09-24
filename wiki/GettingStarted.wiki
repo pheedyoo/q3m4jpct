@@ -1,12 +1,12 @@
 #summary Getting started with q3m4jpct.
 
-= Running the demo via Maven =
-For the moment running the demo is bound to the _exec:java_ goal:
+= Running the Demo via Maven =
+For the moment running the demo is bound to the _exec:exec_ goal:
 {{{
 mvn package exec:exec
 }}}
 
-= Loading an animated player model =
+= Loading an animated Quake III player model =
 Load the model from the default resource path (`/res/q3/models/players/...`):
 {{{
 Q3Player player = new Q3Player("Chaos-Marine");
