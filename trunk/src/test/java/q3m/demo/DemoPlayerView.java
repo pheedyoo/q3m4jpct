@@ -99,7 +99,7 @@ public class DemoPlayerView extends JPanel implements Runnable {
     private void onSetup() throws Exception {
 
         frameBuffer = new FrameBuffer(getWidth(), getHeight(),
-                FrameBuffer.SAMPLINGMODE_GL_AA_4X);
+                FrameBuffer.SAMPLINGMODE_HARDWARE_ONLY);
 
         frameBuffer.disableRenderer(IRenderer.RENDERER_SOFTWARE);
         frameBuffer.enableRenderer(IRenderer.RENDERER_OPENGL);
@@ -108,8 +108,8 @@ public class DemoPlayerView extends JPanel implements Runnable {
 
         MouseHandler mh = new MouseHandler();
         glCanvas.addMouseListener(mh);
-        glCanvas.addMouseMotionListener(mh);
-        glCanvas.addMouseWheelListener(mh);
+     //   glCanvas.addMouseMotionListener(mh);
+     //   glCanvas.addMouseWheelListener(mh);
 
         world = new World();
         world.setAmbientLight(255, 255, 255);
