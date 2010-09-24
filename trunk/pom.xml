@@ -154,10 +154,14 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2</version>
+				<version>1.1-beta-1</version>
 				<configuration>
-					<mainClass>q3m.demo.Demo</mainClass>
-					<classpathScope>test</classpathScope>
+					<executable>${java.home}/bin/java</executable>
+					<arguments>
+						<argument>-Djava.library.path=./lib/org/lwjgl/native</argument>
+						<argument>-jar</argument>
+						<argument>${project.build.directory}/${project.build.finalName}-demo.${project.packaging}</argument>
+					</arguments>
 				</configuration>
 			</plugin>
 		</plugins>
