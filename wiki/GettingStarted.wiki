@@ -1,22 +1,15 @@
 #summary Getting started with q3m4jpct.
 
-= Running the demo in Eclipse =
-  # Check out the code as a project in the workspace
-  # If you aren't using [http://m2eclipse.sonatype.org the m2eclipse plugin] you'll have to manually add `jpct-1.21.jar` to the project classpath
-  # Right click `Demo.java` in `q3m4jpct/src/test/java` and select _Run as > Java Application_
-
 = Running the demo via Maven =
 For the moment running the demo is bound to the _exec:java_ goal:
 {{{
 mvn exec:java
 }}}
 
-
-
 = Loading an animated player model =
 Load the model from the default resource path (`/res/q3/models/players/...`):
 {{{
-Q3Player player = new Q3Player("tankgirl");
+Q3Player player = new Q3Player("Chaos-Marine");
 }}}
 Set the upper and lower animation sequence:
 {{{
