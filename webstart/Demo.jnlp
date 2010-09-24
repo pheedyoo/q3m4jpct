@@ -12,19 +12,22 @@
                 <all-permissions/>
         </security>
         <resources>
-                <nativelib href="Demo.jar"/>
+                <jar href="Demo.jar" />
                 <j2se version="1.5+" initial-heap-size="128m" max-heap-size="512m" />
         </resources>
         <resources os="Windows">
-                <j2se version="1.5+"/>
+                <j2se version="1.5+" />
+                <nativelib href="Demo.jar" />
                 <property name="java.library.path" value="." />
         </resources>
         <resources os="Linux">
-                <j2se version="1.5+"/>
+                <j2se version="1.5+" />
+                <nativelib href="Demo.jar" />
                 <property name="java.library.path" value="." />
         </resources>
         <resources os="Mac OS X">
-                <j2se version="1.5+"/>
+                <j2se version="1.5+" />
+                <nativelib href="Demo.jar" />
                 <property name="java.library.path" value="." />
         </resources>
 </jnlp>
