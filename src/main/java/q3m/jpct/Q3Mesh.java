@@ -72,7 +72,7 @@ public class Q3Mesh extends Object3D {
         if (texName != null) {
             try {
                 Texture tx = TextureUtil.fetchTexture(texName, this);
-                scaleUV = tx.getWidth() / 256f;
+                //scaleUV = tx.getWidth() / 256f;
                 hasTexture = true;
             } catch (IOException ignored) {
             }
