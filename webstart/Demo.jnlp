@@ -8,17 +8,8 @@
                 <description>A simple demo showing a Quake III model.</description>
                 <offline-allowed/>
         </information>
-        <security>
-                <all-permissions/>
-        </security>
         <resources>
                 <j2se version="1.5+" initial-heap-size="128m" max-heap-size="512m" />
                 <jar href="Demo.jar" />
-                <jar href="jpct.jar" />
-                <jar href="lwjgl.jar" />
-                <jar href="lwjgl_util.jar" />
-                <nativelib href="lwjgl.jar" />
-                <nativelib href="lwjgl_util.jar" />
-                <property name="java.library.path" value="." />
         </resources>
 </jnlp>
