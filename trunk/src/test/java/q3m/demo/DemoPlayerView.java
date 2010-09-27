@@ -8,7 +8,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
@@ -26,17 +28,9 @@ public class DemoPlayerView extends JPanel implements Runnable {
 
     private static final long serialVersionUID = 1L;
 
+    private Point dragStart = null;
+
     class MouseHandler extends MouseAdapter {
-
-        private Point dragStart = null;
-
-        public void mouseDragged(MouseEvent event) {
-            if (player != null) {
-                player.rotateZ(((int) dragStart.getX() - event.getX()) / 200f);
-                player.rotateY((event.getY() - (int) dragStart.getY()) / 200f);
-            }
-            dragStart = event.getPoint();
-        }
 
         public void mousePressed(MouseEvent event) {
             dragStart = event.getPoint();
@@ -46,6 +40,19 @@ public class DemoPlayerView extends JPanel implements Runnable {
             dragStart = null;
         }
 
+    }
+
+    class MouseMotionHandler extends MouseMotionAdapter {
+        public void mouseDragged(MouseEvent event) {
+            if (player != null) {
+                player.rotateZ(((int) dragStart.getX() - event.getX()) / 200f);
+                player.rotateY((event.getY() - (int) dragStart.getY()) / 200f);
+            }
+            dragStart = event.getPoint();
+        }
+    }
+
+    class MouseWheelHandler implements MouseWheelListener {
         public void mouseWheelMoved(MouseWheelEvent e) {
             if ((world != null) && (player != null)) {
 
@@ -106,10 +113,9 @@ public class DemoPlayerView extends JPanel implements Runnable {
         glCanvas = frameBuffer.enableGLCanvasRenderer();
         add(glCanvas, BorderLayout.CENTER);
 
-        MouseHandler mh = new MouseHandler();
-        glCanvas.addMouseListener(mh);
-     //   glCanvas.addMouseMotionListener(mh);
-     //   glCanvas.addMouseWheelListener(mh);
+        glCanvas.addMouseListener(new MouseHandler());
+        glCanvas.addMouseMotionListener(new MouseMotionHandler());
+        glCanvas.addMouseWheelListener(new MouseWheelHandler());
 
         world = new World();
         world.setAmbientLight(255, 255, 255);
@@ -131,7 +137,7 @@ public class DemoPlayerView extends JPanel implements Runnable {
         world.getCamera().setPosition(100, 100 / 15f, 0);
         world.getCamera().lookAt(player.getTransformedCenter());
         world.getCamera().setPosition(100, 0, 0);
-        
+
         demo.controls.enable();
     }
 

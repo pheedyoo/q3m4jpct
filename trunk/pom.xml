@@ -8,6 +8,11 @@
 	<artifactId>q3m4jpct</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
+	<properties>
+		<jpct.version>1.21</jpct.version>
+		<lwjgl.version>2.5</lwjgl.version>
+	</properties>
+
 	<name>q3m4jpct</name>
 	<description>Quake III models for jPCT</description>
 
@@ -34,17 +39,17 @@
 		<dependency>
 			<groupId>com.threed</groupId>
 			<artifactId>jpct</artifactId>
-			<version>1.21</version>
+			<version>${jpct.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
-			<version>2.5</version>
+			<version>${lwjgl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-util</artifactId>
-			<version>2.5</version>
+			<version>${lwjgl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -117,7 +122,7 @@
 						</goals>
 						<phase>package</phase>
 						<configuration>
-							<jarPath>${project.basedir}/lib/com/threed/jpct/1.21/jpct-1.21.jar</jarPath>
+							<jarPath>${project.basedir}/lib/com/threed/jpct/${jpct.version}/jpct-${jpct.version}.jar</jarPath>
 							<signedjar>${project.build.directory}/demo/jpct.jar</signedjar>
 						</configuration>
 					</execution>
@@ -128,7 +133,7 @@
 						</goals>
 						<phase>package</phase>
 						<configuration>
-							<jarPath>${project.basedir}/lib/org/lwjgl/lwjgl/2.5/lwjgl-2.5.jar</jarPath>
+							<jarPath>${project.basedir}/lib/org/lwjgl/lwjgl/${lwjgl.version}/lwjgl-${lwjgl.version}.jar</jarPath>
 							<signedjar>${project.build.directory}/demo/lwjgl.jar</signedjar>
 						</configuration>
 					</execution>
@@ -139,7 +144,7 @@
 						</goals>
 						<phase>package</phase>
 						<configuration>
-							<jarPath>${project.basedir}/lib/org/lwjgl/lwjgl-util/2.5/lwjgl-util-2.5.jar</jarPath>
+							<jarPath>${project.basedir}/lib/org/lwjgl/lwjgl-util/${lwjgl.version}/lwjgl-util-${lwjgl.version}.jar</jarPath>
 							<signedjar>${project.build.directory}/demo/lwjgl_util.jar</signedjar>
 						</configuration>
 					</execution>
@@ -219,6 +224,21 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<executable>${java.home}/bin/java</executable>
+					<arguments>
+						<argument>-Xmx512m</argument>
+						<argument>-Djava.library.path=lib/org/lwjgl/native</argument>
+						<argument>-classpath</argument>
+						<argument>${project.basedir}/lib/com/threed/jpct/${jpct.version}/jpct-${jpct.version}.jar${path.separator}${project.basedir}/lib/org/lwjgl/lwjgl/${lwjgl.version}/lwjgl-${lwjgl.version}.jar${path.separator}${project.basedir}/lib/org/lwjgl/lwjgl-util/${lwjgl.version}/lwjgl-util-${lwjgl.version}.jar${path.separator}${project.build.directory}/classes${path.separator}${project.build.directory}/test-classes</argument>
+						<argument>q3m.demo.Demo</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
