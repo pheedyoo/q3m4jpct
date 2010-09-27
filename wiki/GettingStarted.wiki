@@ -3,7 +3,7 @@
 = Running the Demo via Maven =
 For the moment running the demo is bound to the _exec:exec_ goal:
 {{{
-mvn package exec:exec
+mvn test-compile exec:exec
 }}}
 
 = Loading an animated Quake III player model =
