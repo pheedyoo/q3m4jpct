@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+" codebase="http://q3m4jpct.googlecode.com/svn/webstart" href="Demo.jnlp">
-        <application-desc main-class="q3m.demo.Demo" />
-        <information>
-                <title>q3m4jPCT Demo</title>
-                <vendor>lotz.it</vendor>
-                <homepage href="http://code.google.com/p/q3m4jpct" />
-                <description>A simple demo showing a Quake III model.</description>
-                <offline-allowed/>
-        </information>
-        <resources>
-                <j2se version="1.5+" initial-heap-size="128m" max-heap-size="512m" />
-                <jar href="Demo.jar" />
-        </resources>
+	<application-desc main-class="q3m.demo.Demo" />
+	<information>
+	    <title>q3m4jPCT Demo</title>
+	    <vendor>lotz.it</vendor>
+	    <homepage href="http://code.google.com/p/q3m4jpct" />
+	    <description>A simple demo showing a Quake III model.</description>
+	    <offline-allowed/>
+	</information>	
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+	    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+" max-heap-size="256m" />
+	    <jar href="Demo.jar"/>
+	    <jar href="jpct.jar"/>
+	    <jar href="lwjgl.jar"/>
+	    <jar href="lwjgl_util.jar"/>
+	</resources>
+	<resources os="Linux">
+		<j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+" max-heap-size="128m"/> 
+		<nativelib href="lwjgl-linux.jar"/>      
+	</resources>  
+	<resources os="Mac">
+		<j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+" max-heap-size="128m"/> 
+		<nativelib href="lwjgl-macos.jar"/>      
+	</resources>  
+	<resources os="Windows">
+		<j2se href="http://java.sun.com/products/autodl/j2se" version="1.5+" max-heap-size="128m"/> 
+		<nativelib href="lwjgl-windows.jar"/>      
+	</resources>  
 </jnlp>
