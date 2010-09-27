@@ -49,6 +49,7 @@ public class DemoControls extends JPanel {
         upperAni = new JComboBox(new String[] { "DEATH_1", "DEAD_1", "DEATH_2",
                 "DEAD_2", "DEATH_3", "DEAD_3", "GESTURE", "ATTACK", "ATTACK_2",
                 "DROP", "RAISE", "STAND", "STAND_2" });
+        upperAni.setEnabled(false);
         upperAni.setSelectedItem("STAND");
         upperAni.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
@@ -81,6 +82,7 @@ public class DemoControls extends JPanel {
                 "DEAD_2", "DEATH_3", "DEAD_3", "WALK_CR", "WALK", "RUN",
                 "BACK", "SWIM", "JUMP", "LAND", "JUMP_B", "LAND_B", "IDLE",
                 "IDLE_CR", "TURN" });
+        lowerAni.setEnabled(false);
         lowerAni.setSelectedItem("IDLE");
         lowerAni.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
@@ -110,6 +112,11 @@ public class DemoControls extends JPanel {
 
         add(fields, BorderLayout.NORTH);
         add(new JPanel(), BorderLayout.CENTER);
+    }
+    
+    public void enable() {
+        upperAni.setEnabled(true);
+        lowerAni.setEnabled(true);
     }
 
     public void setLabelFps(String value) {

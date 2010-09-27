@@ -131,6 +131,8 @@ public class DemoPlayerView extends JPanel implements Runnable {
         world.getCamera().setPosition(100, 100 / 15f, 0);
         world.getCamera().lookAt(player.getTransformedCenter());
         world.getCamera().setPosition(100, 0, 0);
+        
+        demo.controls.enable();
     }
 
     private void onShutdown() {

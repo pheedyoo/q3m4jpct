@@ -13,19 +13,13 @@
 			<outputDirectory>/</outputDirectory>
 		</file>
 	</files>
-	<dependencySets>
-		<dependencySet>
-			<unpack>true</unpack>
-			<scope>runtime</scope>
-		</dependencySet>
-	</dependencySets>
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}/test-classes</directory>
+			<directory>${project.build.directory}/classes</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}/lib/org/lwjgl/native</directory>
+			<directory>${project.build.directory}/test-classes</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
 	</fileSets>

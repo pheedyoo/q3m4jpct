@@ -100,21 +100,90 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>DemoSign</id>
+						<id>sign-demo</id>
 						<goals>
 							<goal>sign</goal>
 						</goals>
 						<phase>package</phase>
 						<configuration>
-							<verify>true</verify>
-							<keystore>${project.basedir}/src/main/assembly/Demo.pkcs12</keystore>
-							<type>pkcs12</type>
-							<alias>lotz.it</alias>
-							<storepass>sup4s3cr3t</storepass>
 							<jarPath>${project.build.directory}/${project.build.finalName}-demo.${project.packaging}</jarPath>
+							<signedjar>${project.build.directory}/demo/Demo.jar</signedjar>
+						</configuration>
+					</execution>
+					<execution>
+						<id>sign-jPCT</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<jarPath>${project.basedir}/lib/com/threed/jpct/1.21/jpct-1.21.jar</jarPath>
+							<signedjar>${project.build.directory}/demo/jpct.jar</signedjar>
+						</configuration>
+					</execution>
+					<execution>
+						<id>sign-lwjgl</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<jarPath>${project.basedir}/lib/org/lwjgl/lwjgl/2.5/lwjgl-2.5.jar</jarPath>
+							<signedjar>${project.build.directory}/demo/lwjgl.jar</signedjar>
+						</configuration>
+					</execution>
+					<execution>
+						<id>sign-lwjgl-util</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<jarPath>${project.basedir}/lib/org/lwjgl/lwjgl-util/2.5/lwjgl-util-2.5.jar</jarPath>
+							<signedjar>${project.build.directory}/demo/lwjgl_util.jar</signedjar>
+						</configuration>
+					</execution>
+					<execution>
+						<id>sign-lwjgl-linux</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<jarPath>${project.basedir}/lib/org/lwjgl/native/native-linux.jar</jarPath>
+							<signedjar>${project.build.directory}/demo/lwjgl-linux.jar</signedjar>
+						</configuration>
+					</execution>
+					<execution>
+						<id>sign-lwjgl-macos</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<jarPath>${project.basedir}/lib/org/lwjgl/native/native-macos.jar</jarPath>
+							<signedjar>${project.build.directory}/demo/lwjgl-macos.jar</signedjar>
+						</configuration>
+					</execution>
+					<execution>
+						<id>sign-lwjgl-windows</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<jarPath>${project.basedir}/lib/org/lwjgl/native/native-windows.jar</jarPath>
+							<signedjar>${project.build.directory}/demo/lwjgl-windows.jar</signedjar>
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<verify>true</verify>
+					<keystore>${project.basedir}/src/main/assembly/Demo.pkcs12</keystore>
+					<type>pkcs12</type>
+					<alias>lotz.it</alias>
+					<storepass>sup4s3cr3t</storepass>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -150,19 +219,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2</version>
-				<configuration>
-					<executable>${java.home}/bin/java</executable>
-					<arguments>
-						<argument>-Djava.library.path=./lib/org/lwjgl/native</argument>
-						<argument>-jar</argument>
-						<argument>${project.build.directory}/${project.build.finalName}-demo.${project.packaging}</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
