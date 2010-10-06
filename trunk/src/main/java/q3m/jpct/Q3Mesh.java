@@ -26,13 +26,14 @@ package q3m.jpct;
 import java.io.IOException;
 
 import q3m.Q3M;
+import q3m.jpct.shader.Q3ShaderDef;
+import q3m.jpct.shader.Q3ShaderUtil;
 import q3m.jpct.util.TextureUtil;
 import q3m.md3.MD3Mesh;
 
 import com.threed.jpct.Animation;
 import com.threed.jpct.Object3D;
 import com.threed.jpct.SimpleVector;
-import com.threed.jpct.Texture;
 
 /**
  * Quake III surface.
@@ -58,26 +59,9 @@ public class Q3Mesh extends Object3D {
     public Q3Mesh(Q3Model parent, MD3Mesh md3, Q3Skin skin) {
         super(md3.triangles.length);
         this.name = md3.name;
- 
+
         float scaleUV = 1f;
-        boolean hasTexture = false;
-        String texName = null;
 
-        if (skin != null) {
-            texName = (String) skin.shaders.get(name);
-        } else if (md3.shaders.length > 0) {
-            texName = md3.shaders[0].name;
-        }
-
-        if (texName != null) {
-            try {
-                Texture tx = TextureUtil.fetchTexture(texName, this);
-                //scaleUV = tx.getWidth() / 256f;
-                hasTexture = true;
-            } catch (IOException ignored) {
-            }
-        }
-        
         Q3M.debug("building animated mesh: " + name);
 
         int numFrames = md3.vertices.length;
@@ -89,7 +73,7 @@ public class Q3Mesh extends Object3D {
         }
 
         disableVertexSharing();
-        
+
         for (int t = 0; t < numTriangles; t++) {
             v1 = md3.triangles[t][2]; // jPCT uses
             v2 = md3.triangles[t][1]; // counter-clockwise
@@ -158,9 +142,28 @@ public class Q3Mesh extends Object3D {
             setAnimationSequence(anim);
         }
 
-        if (hasTexture) {
-            setTexture(texName);
-            //  setTransparency(0);
+        String texName = null;
+
+        if (skin != null) {
+            texName = (String) skin.shaders.get(name);
+        } else if (md3.shaders.length > 0) {
+            texName = md3.shaders[0].name;
+        }
+
+        if (texName != null) {
+            try {
+                Q3ShaderUtil su = Q3ShaderUtil.getInstance();
+                String shaderName = texName.substring(0, texName.length() - 4);
+                Q3ShaderDef shaderDef = su.getShaderDef(shaderName);
+                if (shaderDef != null) {
+                    setTexture(shaderDef.getTexInfo(this));
+                } else {
+                    TextureUtil.fetchTexture(texName, this);
+                    setTexture(texName);
+                }
+            } catch (IOException e) {
+                Q3M.warn("can't fetch shader: " + e.getMessage());
+            }
         }
     }
 }

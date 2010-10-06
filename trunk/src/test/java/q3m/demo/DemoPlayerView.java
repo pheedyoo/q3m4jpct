@@ -14,7 +14,9 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
+import q3m.Q3M;
 import q3m.jpct.Q3Player;
+import q3m.jpct.shader.Q3ShaderUtil;
 import q3m.q3.ani.AniCfgQ3Lower;
 import q3m.q3.ani.AniCfgQ3Upper;
 
@@ -122,6 +124,9 @@ public class DemoPlayerView extends JPanel implements Runnable {
         World.setDefaultThread(Thread.currentThread());
 
         paint(getGraphics());
+
+        Q3ShaderUtil.getInstance().addShaderDefs(
+                Q3M.getResStream("/res/q3/scripts/IW-csm.shader"));
 
         player = new Q3Player("Chaos-Marine", "Iron-Warrior");// = 'default'
 
